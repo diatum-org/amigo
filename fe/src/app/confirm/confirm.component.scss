@@ -1,0 +1,42 @@
+.confirm-container {
+  width: calc(100% - 64px);
+  background-color: #FFFFFF;
+  padding-top: 10vh;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+.confirm-logo {
+  max-width: 400px;
+  width: 100%;
+  margin: auto;
+  display: block;
+}
+
+.confirm-header {
+  font-size: 24px;
+  text-align: center;
+}
+
+.confirm-body {
+  font-size: 18px;
+  text-align: center;
+  color: #51515E;
+  padding-top: 32px;
+}
+
+.confirm-message {
+  color: #51515E;
+  font-size: 20px;
+  text-align: center;
+  padding-top: 32px;
+  font-weight: bold;
+}
+.confirm-button {
+  color: #2C508F;
+  font-size: 20px;
+  text-align: center;
+  padding-top: 32px;
+  cursor: pointer;
+  font-weight: bold;
+}

@@ -1,0 +1,1505 @@
+
+openapi: 3.0.0
+# Added by API Auto Mocking Plugin
+info:
+  description:
+    An interface to a emigo app of distributed nodes for personal storage.
+      emigo-id - hex encoded sha256 of an emigo 4096 public key
+      emigo-key - hex encoded public key
+
+  version: "1.0.4"
+  title: Digital Archive Emigo App Server API
+  contact:
+    email: rosborne@coredb.org
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+
+  - name: admin
+    description: management of server
+
+  - name: accounts
+    description: view account status
+
+  - name: profile
+    description: interface to account attributes
+
+  - name: search
+    description: search list of accounts
+
+  - name: console
+    description: interface for browser app
+
+  - name: contact
+    description: interface for confirming communication
+
+  - name: password
+    description: interface for resetting password
+
+paths:
+
+  /console/access:
+    put:
+      tags:
+        - console
+      description: Check if token is valid
+      operationId: check-token
+      parameters:
+        - name: token
+          in: query
+          description: access token
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+        '404':
+          description: token not found
+        '500':
+          description: internal server error
+
+  /console/stats:
+    get:
+      tags:
+        - console
+      description: Retrieve stats of server
+      operationId: get-stats
+      parameters:
+        - name: token
+          in: query
+          description: access token
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SystemStat'
+        '404':
+          description: token not found
+        '500':
+          description: internal server error
+
+  /console/config:
+    get:
+      tags:
+        - console
+      description: Retrieve app configuration
+      operationId: get-config
+      parameters:
+        - name: token
+          in: query
+          description: access token
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppConfig'
+        '401':
+          description: invalid token
+        '500':
+          description: internal server error
+    put:
+      tags:
+        - console
+      description: Set app configuration
+      operationId: set-config
+      parameters:
+        - name: token
+          in: query
+          description: access token
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+        '401':
+          description: invalid token
+        '500':
+          description: internal server error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppConfig'
+        description: updated configuration
+        required: true
+
+  /reset/account:
+    get:
+      tags:
+        - password
+      description: Check if reset token is valid
+      operationId: reset-check
+      parameters:
+        - name: token
+          in: query
+          description: reset token
+          required: true
+          schema:
+            type: string
+            format: secure-token
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+        '401':
+          description: invalid token
+        '404':
+          description: not found
+        '500':
+          description: internal server error
+    put:
+      tags:
+        - password
+      description: Apply new password with token
+      operationId: reset-password
+      parameters:
+        - name: token
+          in: query
+          description: confirmation token
+          required: true
+          schema:
+            type: string
+            format: secure-token
+        - name: password
+          in: query
+          description: updated account password
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ok
+        '401':
+          description: invalid token
+        '404':
+          description: not found
+        '500':
+          description: internal server error
+
+  /confirm/account:
+    get:
+      tags:
+        - contact
+      description: Check if confirm token is valid
+      operationId: confirm-check
+      parameters:
+        - name: token
+          in: query
+          description: confirmation token
+          required: true
+          schema:
+            type: string
+            format: secure-token
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+        '401':
+          description: invalid token
+        '404':
+          description: not found
+        '500':
+          description: internal server error
+    put:
+      tags:
+        - contact
+      description: Confirm communication method
+      operationId: confirm-account
+      parameters:
+        - name: token
+          in: query
+          description: confirmation token
+          required: true
+          schema:
+            type: string
+            format: secure-token
+      responses:
+        '200':
+          description: ok
+        '401':
+          description: invalid token
+        '404':
+          description: not found
+        '500':
+          description: internal server error
+
+  /admin/server/stats:
+    get:
+      tags:
+        - admin
+      description: Retrieve server system status
+      operationId: admin-server-stats
+      parameters:
+        - name: token
+          in: query
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: offset
+          in: query
+          description: offset into record set
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: limit
+          in: query
+          description: max size of record set
+          required: false
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SystemStat'
+        '403':
+          description: access denied
+    post:
+      tags:
+        - admin
+      description: Set server system stat record
+      operationId: admin-server-stat
+      parameters:
+        - name: token
+          in: query
+          description: access token
+          required: false
+          schema:
+            type: string
+        - name: processor
+          in: query
+          description: time
+          required: true
+          schema:
+            type: integer
+            minimum: 0
+            maximum: 100
+        - name: memory
+          in: query
+          description: current memory free
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: storage
+          in: query
+          description: current storage free
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+        '403':
+          description: access denied
+
+  /accounts/status:
+    get:
+      tags:
+        - accounts
+      description: Retrieve accounts available for creation
+      operationId: account-status
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Result'
+        '401':
+          description: invalid password
+        '500':
+          description: internal server error
+
+  /accounts/contact:
+    post:
+      tags:
+        - accounts
+      description: Check if account contact is available
+      operationId: account-contact
+      parameters:
+        - name: phoneNumber
+          in: query
+          description: recovery phone number
+          required: false
+          schema:
+            type: string
+        - name: emailAddress
+          in: query
+          description: recovery email address
+          required: false
+          schema:
+            type: string
+        - name: emigoId
+          in: query
+          description: id of emigo
+          required: false
+          schema:
+            type: string
+      responses:
+        '201':
+          description: account created
+          content:
+            application/json:
+              schema:
+                type: boolean
+        '401':
+          description: invalid password
+        '406':
+          description: account limit reached
+        '500':
+          description: internal server error
+
+  /accounts/attached:
+    post:
+      tags:
+        - accounts
+      description: Create new emigo account and in turn attach an existing db account
+      operationId: attach-account
+      parameters:
+        - name: phoneNumber
+          in: query
+          description: recovery phone number
+          required: false
+          schema:
+            type: string
+        - name: emailAddress
+          in: query
+          description: recovery email address
+          required: false
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: password to use for login
+          required: true
+          schema:
+            type: string
+        - name: emigoId
+          in: query
+          description: id of emigo to be attached
+          required: true
+          schema:
+            type: string
+            format: emigo-id
+        - name: code
+          in: query
+          description: single use code
+          required: true
+          schema:
+            type: string
+        - name: node
+          in: query
+          description: node to forward request to
+          required: true
+          schema:
+            type: string
+        - name: timestamp
+          in: query
+          description: request issued time
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: auth
+          in: query
+          description: authentication token
+          schema:
+            type: string
+            format: secure-token
+      responses:
+        '201':
+          description: account created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmigoLogin'
+        '401':
+          description: invalid password
+        '406':
+          description: account limit reached
+        '500':
+          description: internal server error
+
+  /accounts/created:
+    post:
+      tags:
+        - accounts
+      description: Create new emigo account and in turn create a new db account
+      operationId: create-account
+      parameters:
+        - name: phoneNumber
+          in: query
+          description: recovery phone number
+          required: false
+          schema:
+            type: string
+        - name: emailAddress
+          in: query
+          description: recovery email address
+          required: false
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: password to use for login
+          required: true
+          schema:
+            type: string
+        - name: timestamp
+          in: query
+          description: request issued time
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: auth
+          in: query
+          description: authentication token
+          schema:
+            type: string
+            format: secure-token
+      responses:
+        '201':
+          description: account created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmigoLogin'
+        '401':
+          description: invalid password
+        '406':
+          description: account limit reached
+        '500':
+          description: internal server error
+
+  /accounts/registry:
+    put:
+      tags:
+        - accounts
+      description: Update profile with registry message
+      operationId: update-handle
+      parameters:
+        - name: token
+          in: query
+          description: login token
+          required: true
+          schema:
+            type: string
+            format: secure-token
+        - name: revision
+          in: query
+          description: current revision
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: registry
+          in: query
+          description: registry base url
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: handle updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Emigo'
+        '400':
+          description: invalid message message received
+        '423':
+          description: account not enabled
+        '401':
+          description: invalid login token
+        '500':
+          description: internal server error
+        '503':
+          description: external server error
+
+  /accounts/revision:
+    get:
+      tags:
+        - accounts
+      description: request revision of module data
+      operationId: get-identity-revision
+      parameters:
+      - name: token
+        in: query
+        description: access token
+        required: true
+        schema:
+          type: string
+          format: secure-token
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int32
+        '403':
+          description: access denied
+
+  /accounts/token:
+    get:
+      tags:
+        - accounts
+      description: Login action to acquire access token
+      operationId: login-account
+      parameters:
+        - name: emigoId
+          in: query
+          description: emigo identifier
+          required: false
+          schema:
+            type: string
+            format: emigo-id
+        - name: phone
+          in: query
+          description: registered phone
+          required: false
+          schema:
+            type: string
+        - name: email
+          in: query
+          description: registered email
+          required: false
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: account password
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: account login
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmigoLogin'
+        '401':
+          description: invalid password
+        '404':
+          description: referenced account not found
+        '423':
+          description: account locked
+        '500':
+          description: internal server error
+    put:
+      tags:
+        - accounts
+      description: Logout action and force reset of access token
+      operationId: logout-account
+      parameters:
+        - name: token
+          in: query
+          description: access token
+          required: true
+          schema:
+            type: string
+            format: secure-token
+      responses:
+        '200':
+          description: token reset
+        '401':
+          description: invalid token
+        '423':
+          description: account locked
+        '500':
+          description: internal server error
+
+  /profile/password:
+    put:
+      tags:
+        - profile
+      description: Update account password
+      operationId: password-profile
+      parameters:
+        - name: token
+          in: query
+          description: access token
+          required: true
+          schema:
+            type: string
+            format: secure-token
+        - name: password
+          in: query
+          description: account password
+          required: true
+          schema:
+            type: string
+        - name: update
+          in: query
+          description: updated account password
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: password updated
+        '401':
+          description: invalid token
+        '400':
+          description: password mismatch
+        '423':
+          description: account locked
+        '500':
+          description: internal server error
+
+  /profile/reset:
+    put:
+      tags:
+        - profile
+      description: Trigger password reset message
+      operationId: reset-trigger
+      parameters:
+        - name: phoneNumber
+          in: query
+          description: recovery phone number
+          required: false
+          schema:
+            type: string
+        - name: emailAddress
+          in: query
+          description: recovery email address
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ok
+        '404':
+          description: not found
+        '500':
+          description: internal server error
+
+  /profile/confirm:
+    put:
+      tags:
+        - profile
+      description: Trigger account confirmation message
+      operationId: confirm-trigger
+      parameters:
+        - name: token
+          in: query
+          description: access token
+          required: true
+          schema:
+            type: string
+            format: secure-token
+      responses:
+        '200':
+          description: ok
+        '401':
+          description: invalid token
+        '404':
+          description: not found
+        '500':
+          description: internal server error
+
+  /profile/available:
+    put:
+      tags:
+        - profile
+      description: Update available state
+      operationId: available-profile
+      parameters:
+        - name: token
+          in: query
+          description: access token
+          required: true
+          schema:
+            type: string
+            format: secure-token
+        - name: flag
+          in: query
+          description: whether account is searchable
+          required: true
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: password updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        '401':
+          description: invalid token
+        '423':
+          description: account locked
+        '500':
+          description: internal server error
+
+  /profile/searchable:
+    put:
+      tags:
+        - profile
+      description: Update searchable state
+      operationId: searchable-profile
+      parameters:
+        - name: token
+          in: query
+          description: access token
+          required: true
+          schema:
+            type: string
+            format: secure-token
+        - name: flag
+          in: query
+          description: whether account is searchable
+          required: true
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: password updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        '401':
+          description: invalid token
+        '423':
+          description: account locked
+        '500':
+          description: internal server error
+
+  /profile/phone:
+    put:
+      tags:
+        - profile
+      description: Update account password
+      operationId: phone-profile
+      parameters:
+        - name: token
+          in: query
+          description: access token
+          required: true
+          schema:
+            type: string
+            format: secure-token
+        - name: phoneNumber
+          in: query
+          description: phone number to update
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: password updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        '401':
+          description: invalid token
+        '423':
+          description: account locked
+        '500':
+          description: internal server error
+
+  /profile/email:
+    put:
+      tags:
+        - profile
+      description: Update account password
+      operationId: email-profile
+      parameters:
+        - name: token
+          in: query
+          description: access token
+          required: true
+          schema:
+            type: string
+            format: secure-token
+        - name: emailAddress
+          in: query
+          description: email address to update
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: password updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        '401':
+          description: invalid token
+        '423':
+          description: account locked
+        '500':
+          description: internal server error
+
+  /profile/location:
+    put:
+      tags:
+        - profile
+      description: Set gps location of account
+      operationId: gps-profile
+      parameters:
+        - name: token
+          in: query
+          description: access token
+          required: true
+          schema:
+            type: string
+            format: secure-token
+        - name: expires
+          in: query
+          description: expiration of location
+          required: false
+          schema:
+            type: number
+            format: int64
+      responses:
+        '200':
+          description: location updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        '401':
+          description: invalid token
+        '423':
+          description: account locked
+        '500':
+          description: internal server error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GpsLocation'
+        description: emigo to insert
+        required: true
+
+  /profile/revision:
+    get:
+      tags:
+        - profile
+      description: request revision of profile
+      operationId: get-profile-revision
+      parameters:
+      - name: token
+        in: query
+        description: access token
+        required: true
+        schema:
+          type: string
+          format: secure-token
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int32
+        '403':
+          description: access denied
+
+  /profile/all:
+    get:
+      tags:
+        - profile
+      description: Retrieve current profile values
+      operationId: get-profile
+      parameters:
+        - name: token
+          in: query
+          description: access token
+          required: true
+          schema:
+            type: string
+            format: secure-token
+      responses:
+        '200':
+          description: location updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        '401':
+          description: invalid token
+        '423':
+          description: account locked
+        '500':
+          description: internal server error
+
+  /search/accounts:
+    get:
+      tags:
+        - search
+      description: Search accounts according to criteria
+      operationId: search-accounts
+      parameters:
+        - name: token
+          in: query
+          description: login token
+          required: true
+          schema:
+            type: string
+            format: secure-token
+        - name: match
+          in: query
+          description: or-set of matching name, handle, location, description
+          required: false
+          schema:
+            type: string
+        - name: name
+          in: query
+          description: filter with name like
+          required: false
+          schema:
+            type: string
+        - name: handle
+          in: query
+          description: filter with handle like
+          required: false
+          schema:
+            type: string
+        - name: description
+          in: query
+          description: filter with description like
+          required: false
+          schema:
+            type: string
+        - name: location
+          in: query
+          description: filter with location like
+          required: false
+          schema:
+            type: string
+        - name: offset
+          in: query
+          description: return results starting at offset
+          required: false
+          schema:
+            type: number
+            format: int32
+        - name: limit
+          in: query
+          description: return max number of results
+          required: true
+          schema:
+            type: number
+            maximum: 1024
+            format: int32
+      responses:
+        '200':
+          description: search executed
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contact'
+        '423':
+          description: account not enabled
+        '401':
+          description: invalid login token
+        '500':
+          description: internal server error
+    post:
+      tags:
+        - search
+      description: Search accounts according to location
+      operationId: scan-accounts
+      parameters:
+        - name: token
+          in: query
+          description: login token
+          required: true
+          schema:
+            type: string
+            format: secure-token
+      responses:
+        '200':
+          description: search executed
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contact'
+        '423':
+          description: account not enabled
+        '401':
+          description: invalid login token
+        '500':
+          description: internal server error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchArea'
+        description: emigo to insert
+        required: true
+
+components:
+  schemas:
+
+    AppConfig:
+      type: object
+      properties:
+        region:
+          type: string
+        sourceEmail:
+          type: string
+        accessId:
+          type: string
+        accessKey:
+          type: string
+        consoleToken:
+          type: string
+        appNode:
+          type: string
+        appEmigo:
+          type: string
+        appToken:
+          type: string
+        clusterUrl:
+          type: string
+        clusterToken:
+          type: string
+        slotToken:
+          type: string
+        statToken:
+          type: string
+
+    Profile:
+      type: object
+      properties:
+        revision:
+          type: number
+          format: int32
+        phoneNumber:
+          type: string
+        confirmedPhone:
+          type: boolean
+        emailAddress:
+          type: string
+        confirmedEmail:
+          type: boolean
+        searchable:
+          type: boolean
+        available:
+          type: boolean
+        gps:
+          type: boolean
+        gpsTimestamp:
+          type: number
+          format: int64
+        gpsLongitude:
+          type: number
+          format: float
+        gpsLatitude:
+          type: number
+          format: float
+
+    SearchArea:
+      type: object
+      required:
+        - min
+        - max
+      properties:
+        min:
+          $ref: '#/components/schemas/GpsLocation'
+        max:
+          $ref: '#/components/schemas/GpsLocation'
+
+    GpsLocation:
+      type: object
+      required:
+        - longitude
+        - latitude
+        - altitude
+      properties:
+        longitude:
+          type: number
+          format: float
+        latitude:
+          type: number
+          format: float
+        altitude:
+          type: number
+          format: float
+
+    Result:
+      type: object
+      properties:
+        boolValue:
+          type: boolean
+        numValue:
+          type: integer
+          format: int64
+        strValue:
+          type: string
+
+    ConfigEntry:
+      type: object
+      required:
+        - configId
+        - entry
+      properties:
+        configId:
+          type: string
+        entry:
+          $ref: '#/components/schemas/Entry'
+
+    Entry:
+      type: object
+      properties:
+        name:
+          type: string
+        stringValue:
+          type: string
+        numValue:
+          type: integer
+          format: int64
+        boolValue:
+          type: boolean
+
+    NodeConnection:
+      type: object
+      required:
+        - emigoId
+        - node
+        - handle
+        - registry
+        - token
+      properties:
+        emigoId:
+          type: string
+          format: emigo-id
+        node:
+          type: string
+          format: base url
+        handle:
+          type: string
+        registry:
+          type: string
+          format: base url
+        token:
+          type: string
+          format: secure-token
+
+    EmigoLogin:
+      type: object
+      required:
+        - token
+        - account
+        - service
+      properties:
+        token:
+          type: string
+          format: secure-token
+        account:
+          $ref: '#/components/schemas/NodeConnection'
+        service:
+          $ref: '#/components/schemas/NodeConnection'
+
+    Contact:
+      type: object
+      required:
+        - emigoId
+        - node
+        - revision
+        - version
+        - available
+      properties:
+        emigoId:
+          type: string
+          format: emigoId
+        name:
+          type: string
+        description:
+          type: string
+        logo:
+          type: string
+          format: base64 encoding of binary image
+        location:
+          type: string
+        node:
+          type: string
+          example: https://node.coredb.org:9999/app
+        registry:
+          type: string
+          example: https://registry.coredb.org:8888/app
+        revision:
+          type: integer
+          format: int32
+        version:
+          type: string
+          format: protocol-version
+        handle:
+          type: string
+        available:
+          type: boolean
+
+    Emigo:
+      type: object
+      required:
+        - emigoId
+        - node
+        - revision
+        - version
+      properties:
+        emigoId:
+          type: string
+          format: emigoId
+        name:
+          type: string
+        description:
+          type: string
+        logo:
+          type: string
+          format: base64 encoding of binary image
+        location:
+          type: string
+        node:
+          type: string
+          example: https://node.coredb.org:9999/app
+        registry:
+          type: string
+          example: https://registry.coredb.org:8888/app
+        revision:
+          type: integer
+          format: int32
+        version:
+          type: string
+          format: protocol-version
+        handle:
+          type: string
+
+    EmigoToken:
+      type: object
+      required:
+        - emigoId
+        - emigo
+        - signature
+        - token
+      properties:
+        emigoId:
+          type: string
+          format: emigo-id
+        emigo:
+          $ref: '#/components/schemas/EmigoMessage'
+        signature:
+          type: string
+          format: signature
+        token:
+          type: string
+          format: Base64 & JSON serialized string of token
+
+    EmigoMessage:
+      type: object
+      required:
+        - key
+        - keyType
+        - signature
+        - data
+      properties:
+        key:
+          type: string
+          format: emigo-key
+        keyType:
+          type: string
+        signature:
+          type: string
+          format: signature of Base64 data converted to hex string
+        data:
+          type: string
+          format: Base64 & JSON serialized string of data object
+
+    UserEntry:
+      type: object
+      required:
+        - emigo
+        - data
+      properties:
+        emigo:
+          $ref: '#/components/schemas/Emigo'
+        data:
+          $ref: '#/components/schemas/UserEntryData'
+
+    UserEntryData:
+      type: object
+      required:
+        - enabled
+        - accountToken
+        - serviceToken
+      properties:
+        enabled:
+          type: boolean
+        accountToken:
+          type: string
+          format: secure-token
+        serviceToken:
+          type: string
+          format: secure-token
+
+    AccountStatus:
+      type: object
+      required:
+        - total
+        - current
+      properties:
+        total:
+          type: integer
+          format: int64
+        current:
+          type: integer
+          format: int64
+
+    LinkMessage:
+      type: object
+      required:
+        - emigo
+        - signature
+        - link
+      properties:
+        emigo:
+          $ref: '#/components/schemas/EmigoMessage'
+        signature:
+          type: string
+          format: signature
+        create:
+          type: string
+          format: Base64 & JSON serialized string of link request
+        attach:
+          type: string
+          format: Base64 & JSON serialized string of link request
+
+    ServiceAccess:
+      type: object
+      properties:
+        enableShow:
+          type: boolean
+        enableIdentity:
+          type: boolean
+        enableProfile:
+          type: boolean
+        enableGroup:
+          type: boolean
+        enableShare:
+          type: boolean
+        enablePrompt:
+          type: boolean
+        enableService:
+          type: boolean
+        enableIndex:
+          type: boolean
+        enableUser:
+          type: boolean
+        enableAccess:
+          type: boolean
+        enableAccount:
+          type: boolean
+        enableAgent:
+          type: boolean
+        enableContact:
+          type: boolean
+
+    AttachLink:
+      type: object
+      required:
+        - emigoId
+        - access
+        - expires
+        - issued
+      properties:
+        emigoId:
+          type: string
+          format: emigo-id
+        access:
+          $ref: '#/components/schemas/ServiceAccess'
+        expires:
+          type: integer
+          format: int64
+        issued:
+          type: integer
+          format: int64
+
+    CreateLink:
+      type: object
+      required:
+        - access
+        - expires
+        - issued
+      properties:
+        access:
+          $ref: '#/components/schemas/ServiceAccess'
+        expires:
+          type: integer
+          format: int64
+        issued:
+          type: integer
+          format: int64
+
+    SystemStat:
+      type: object
+      required:
+        - timestamp
+        - processor
+        - memory
+        - storage
+        - requests
+        - accounts
+      properties:
+        timestamp:
+          type: integer
+          format: int32
+        processor:
+          type: integer
+          format: int32
+        memory:
+          type: integer
+          format: int64
+        storage:
+          type: integer
+          format: int64
+        requests:
+          type: integer
+          format: int64
+        accounts:
+          type: integer
+          format: int64
+
+

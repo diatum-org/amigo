@@ -1,0 +1,37 @@
+<div class="reset-container">
+  <img class="reset-logo" src="assets/logo.png">
+  <div *ngIf="status=='valid'">
+    <div class="reset-header">Create a new password</div>
+    <div class="reset-body">   
+      <mat-form-field class="reset-input">
+        <mat-label>New Password</mat-label>
+        <input matInput type="password" (keyup)="updatePassword()" [(ngModel)]="password" spellcheck=false>
+        <button mat-button matSuffix mat-icon-button (click)="clearPassword()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+      <mat-form-field class="reset-input">
+        <mat-label>Confirm Password</mat-label>
+        <input matInput type="password" (keyup)="updatePassword()" [(ngModel)]="validate" spellcheck=false>
+        <button mat-button matSuffix mat-icon-button (click)="clearValidate()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+    <div *ngIf="reset" class="reset-button" (click)="onReset()">Reset Password</div>
+    <div *ngIf="!reset" class="reset-disabled">Reset Password</div>
+    <div class="reset-attr">
+      <div class="reset-label">Must Contain:</div>
+      <div [ngStyle]="{'color': lowerColor}">- Lower case character (abc)</div>
+      <div [ngStyle]="{'color': upperColor}">- Upper case character (ABC)</div>
+      <div [ngStyle]="{'color': numColor}">- Numeric character (123)</div>
+      <div [ngStyle]="{'color': specialColor}">- Special character (!@#$%)</div>
+      <div [ngStyle]="{'color': countColor}">- At least 8 characters</div>
+      <div [ngStyle]="{'color': badColor}">- No other characters</div>
+      <div [ngStyle]="{'color': matchColor}">- Matching passwords</div>
+    </div>
+  </div>
+  <div *ngIf="status=='notfound'" class="reset-message">Invalid password reset link</div>
+  <div *ngIf="status=='expired'" class="reset-message">Password reset link has expired</div>
+  <div *ngIf="status=='reset'" class="reset-message">Your password has been reset</div>
+</div>

@@ -1,0 +1,31 @@
+<div *ngIf="status!=null" class="confirm-container">
+
+  <img class="confirm-logo" src="assets/logo.png">
+
+  <div *ngIf="status=='valid'">
+    <div class="confirm-button" (click)="onConfirm()">Confirm</div>
+    <div class="confirm-body">
+      <span>Please verify your account {{ mode }}.</span>
+    </div>
+  </div>
+
+  <div *ngIf="status=='expired'">
+    <div class="confirm-body">
+      <span>This confirmation link has expired.</span>
+    </div>
+  </div>
+
+  <div *ngIf="status=='notfound'">
+    <div class="confirm-body">
+      <span>This confirmation link is invalid.</span>
+    </div>
+  </div>
+
+  <div *ngIf="status=='confirmed'">
+    <div class="confirm-message">Confirmed</div>
+    <div class="confirm-body">
+      <span>Thanks for joining us!</span>
+    </div>
+  </div>
+
+</div>
