@@ -6,52 +6,9 @@
 
 <div *ngIf="configSet" class="config-data">
   <div class="config-row">
-    <mat-form-field class="config-input">
-      <mat-label>Access Key</mat-label>
-      <input matInput [(ngModel)]="config.accessKey" spellcheck=false>
-    </mat-form-field>
-    <mat-form-field class="config-input">
-      <mat-label>Key ID</mat-label>
-      <input matInput [(ngModel)]="config.accessId" spellcheck=false>
-    </mat-form-field>
-  </div>
-  <div class="config-row">
-    <mat-form-field class="config-input">
-      <mat-label>Region</mat-label>
-      <input matInput [(ngModel)]="config.region" spellcheck=false>
-    </mat-form-field>
-    <mat-form-field class="config-input">
-      <mat-label>Source Email</mat-label>
-      <input matInput [(ngModel)]="config.sourceEmail" spellcheck=false>
-    </mat-form-field>
-  </div>
-  <div class="config-row">
-    <mat-form-field class="config-input">
+    <mat-form-field class="config-token">
       <mat-label>Node URL</mat-label>
       <input matInput [(ngModel)]="config.appNode" spellcheck=false>
-    </mat-form-field>
-    <mat-form-field class="config-input">
-      <mat-label>Cluster URL</mat-label>
-      <input matInput [(ngModel)]="config.clusterUrl" spellcheck=false>
-    </mat-form-field>
-  </div>
-
-  <div class="config-row">
-    <mat-form-field class="config-token">
-      <mat-label>Console Token</mat-label>
-      <input matInput [(ngModel)]="config.consoleToken" spellcheck=false>
-    </mat-form-field>
-  </div>
-  <div class="config-row">
-    <mat-form-field class="config-token">
-      <mat-label>Stat Token</mat-label>
-      <input matInput [(ngModel)]="config.statToken" spellcheck=false>
-    </mat-form-field>
-  </div>
-  <div class="config-row">
-    <mat-form-field class="config-token">
-      <mat-label>Node Emigo</mat-label>
-      <input matInput [(ngModel)]="config.appEmigo" spellcheck=false>
     </mat-form-field>
   </div>
   <div class="config-row">
@@ -62,14 +19,8 @@
   </div>
   <div class="config-row">
     <mat-form-field class="config-token">
-      <mat-label>Cluster Token</mat-label>
-      <input matInput [(ngModel)]="config.clusterToken" spellcheck=false>
-    </mat-form-field>
-  </div>
-  <div class="config-row">
-    <mat-form-field class="config-token">
-      <mat-label>Status Token</mat-label>
-      <input matInput [(ngModel)]="config.slotToken" spellcheck=false>
+      <mat-label>Console Token</mat-label>
+      <input matInput [(ngModel)]="config.consoleToken" spellcheck=false>
     </mat-form-field>
   </div>
 </div>

@@ -12,38 +12,29 @@ import javax.persistence.*;
 @Table(name = "account", uniqueConstraints = @UniqueConstraint(columnNames = { "id" }))
 public class Account extends Contact implements Serializable {
   private Integer id;
-  private String password;
-  private String salt;
   private Boolean gps;
   private Integer profileRevision;
   private Float gpsLongitude;
   private Float gpsLatitude;
   private Float gpsAltitude;
   private Long gpsTimestamp;
-  private String phoneNumber;
-  private Boolean confirmedPhone;
-  private String emailAddress;
-  private Boolean confirmedEmail;
   private Boolean searchable;
   private String loginToken;
   private String accountToken;
   private String serviceToken;
   private Boolean enabled;
-  private String resetToken;
-  private Long resetIssued;
-  private Long resetExpires;
   private Long createTimestamp;
   
   public Account() { 
     this.profileRevision = 0;
   }
 
-  public Account(Emigo emigo, String pass, String salt, String phone, String email, String login, String account, String service, Long timestamp) {
-    update(emigo, pass, salt, phone, email, login, account, service, timestamp);
+  public Account(Emigo emigo, String login, String account, String service, Long timestamp) {
+    update(emigo, login, account, service, timestamp);
   }
 
   @Transient
-  public void update(Emigo emigo, String pass, String salt, String phone, String email, String login, String account, String service, Long timestamp) {
+  public void update(Emigo emigo, String login, String account, String service, Long timestamp) {
     super.setEmigoId(emigo.getEmigoId());
     super.setName(emigo.getName());
     super.setDescription(emigo.getDescription());
@@ -55,12 +46,8 @@ public class Account extends Contact implements Serializable {
     // registry and handle only set in registry response
     super.setRevision(0);
     this.gps = false;
-    this.phoneNumber = phone;
-    this.emailAddress = email;
     this.searchable = false;
     this.enabled = true;
-    this.salt = salt;
-    this.password = pass;
     this.loginToken = login;
     this.accountToken = account;
     this.serviceToken = service;
@@ -101,22 +88,6 @@ public class Account extends Contact implements Serializable {
   }
   public void setEmigoId(String value) {
     super.setEmigoId(value);
-  }
-
-  @JsonIgnore
-  public String getPassword() {
-    return this.password;
-  }
-  public void setPassword(String value) {
-    this.password = value;
-  }
-
-  @JsonIgnore
-  public String getSalt() {
-    return this.salt;
-  }
-  public void setSalt(String value) {
-    this.salt = value;
   }
 
   @JsonIgnore
@@ -240,38 +211,6 @@ public class Account extends Contact implements Serializable {
   }
 
   @JsonIgnore
-  public String getPhoneNumber() {
-    return this.phoneNumber;
-  }
-  public void setPhoneNumber(String value) {
-    this.phoneNumber = value;
-  }
-
-  @JsonIgnore
-  public Boolean getConfirmedPhone() {
-    return this.confirmedPhone;
-  }
-  public void setConfirmedPhone(Boolean value) {
-    this.confirmedPhone = value;
-  }
-
-  @JsonIgnore
-  public String getEmailAddress() {
-    return this.emailAddress;
-  }
-  public void setEmailAddress(String value) {
-    this.emailAddress = value;
-  }
-
-  @JsonIgnore
-  public Boolean getConfirmedEmail() {
-    return this.confirmedEmail;
-  }
-  public void setConfirmedEmail(Boolean value) {
-    this.confirmedEmail = value;
-  }
-
-  @JsonIgnore
   public Boolean getAvailable() {
     return super.isAvailable();
   }
@@ -327,28 +266,5 @@ public class Account extends Contact implements Serializable {
     this.profileRevision = value;
   }
 
-  @JsonIgnore
-  public String getResetToken() {
-    return this.resetToken;
-  }
-  public void setResetToken(String value) {
-    this.resetToken = value;
-  }
-
-  @JsonIgnore
-  public Long getResetIssued() {
-    return this.resetIssued;
-  }
-  public void setResetIssued(Long value) {
-    this.resetIssued = value;
-  }
-
-  @JsonIgnore
-  public Long getResetExpires() {
-    return this.resetExpires;
-  }
-  public void setResetExpires(Long value) {
-    this.resetExpires = value;
-  }
 }
 

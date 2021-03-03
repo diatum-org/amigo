@@ -28,31 +28,6 @@ import java.util.Map;
 @Api(value = "accounts", description = "the accounts API")
 public interface AccountsApi {
 
-    @ApiOperation(value = "", nickname = "accountContact", notes = "Check if account contact is available", response = Boolean.class, tags={ "accounts", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 201, message = "account created", response = Boolean.class),
-        @ApiResponse(code = 401, message = "invalid password"),
-        @ApiResponse(code = 406, message = "account limit reached"),
-        @ApiResponse(code = 500, message = "internal server error") })
-    @RequestMapping(value = "/accounts/contact",
-        produces = { "application/json" }, 
-        method = RequestMethod.POST)
-    ResponseEntity<Boolean> accountContact(@ApiParam(value = "recovery phone number") @Valid @RequestParam(value = "phoneNumber", required = false) String phoneNumber
-,@ApiParam(value = "recovery email address") @Valid @RequestParam(value = "emailAddress", required = false) String emailAddress
-,@ApiParam(value = "id of emigo") @Valid @RequestParam(value = "emigoId", required = false) String emigoId
-);
-
-
-    @ApiOperation(value = "", nickname = "accountStatus", notes = "Retrieve accounts available for creation", response = Result.class, tags={ "accounts", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = Result.class),
-        @ApiResponse(code = 401, message = "invalid password"),
-        @ApiResponse(code = 500, message = "internal server error") })
-    @RequestMapping(value = "/accounts/status",
-        produces = { "application/json" }, 
-        method = RequestMethod.GET)
-    ResponseEntity<Result> accountStatus();
-
 
     @ApiOperation(value = "", nickname = "attachAccount", notes = "Create new emigo account and in turn attach an existing db account", response = EmigoLogin.class, tags={ "accounts", })
     @ApiResponses(value = { 
@@ -67,28 +42,8 @@ public interface AccountsApi {
 ,@NotNull @ApiParam(value = "id of emigo to be attached", required = true) @Valid @RequestParam(value = "emigoId", required = true) String emigoId
 ,@NotNull @ApiParam(value = "single use code", required = true) @Valid @RequestParam(value = "code", required = true) String code
 ,@NotNull @ApiParam(value = "node to forward request to", required = true) @Valid @RequestParam(value = "node", required = true) String node
-,@NotNull @ApiParam(value = "request issued time", required = true) @Valid @RequestParam(value = "timestamp", required = true) Long timestamp
-,@ApiParam(value = "recovery phone number") @Valid @RequestParam(value = "phoneNumber", required = false) String phoneNumber
-,@ApiParam(value = "recovery email address") @Valid @RequestParam(value = "emailAddress", required = false) String emailAddress
-,@ApiParam(value = "authentication token") @Valid @RequestParam(value = "auth", required = false) String auth
 );
 
-
-    @ApiOperation(value = "", nickname = "createAccount", notes = "Create new emigo account and in turn create a new db account", response = EmigoLogin.class, tags={ "accounts", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 201, message = "account created", response = EmigoLogin.class),
-        @ApiResponse(code = 401, message = "invalid password"),
-        @ApiResponse(code = 406, message = "account limit reached"),
-        @ApiResponse(code = 500, message = "internal server error") })
-    @RequestMapping(value = "/accounts/created",
-        produces = { "application/json" }, 
-        method = RequestMethod.POST)
-    ResponseEntity<EmigoLogin> createAccount(@NotNull @ApiParam(value = "password to use for login", required = true) @Valid @RequestParam(value = "password", required = true) String password
-,@NotNull @ApiParam(value = "request issued time", required = true) @Valid @RequestParam(value = "timestamp", required = true) Long timestamp
-,@ApiParam(value = "recovery phone number") @Valid @RequestParam(value = "phoneNumber", required = false) String phoneNumber
-,@ApiParam(value = "recovery email address") @Valid @RequestParam(value = "emailAddress", required = false) String emailAddress
-,@ApiParam(value = "authentication token") @Valid @RequestParam(value = "auth", required = false) String auth
-);
 
 
     @ApiOperation(value = "", nickname = "getIdentityRevision", notes = "request revision of module data", response = Integer.class, tags={ "accounts", })
@@ -101,34 +56,6 @@ public interface AccountsApi {
     ResponseEntity<Integer> getIdentityRevision(@NotNull @ApiParam(value = "access token", required = true) @Valid @RequestParam(value = "token", required = true) String token
 );
 
-
-    @ApiOperation(value = "", nickname = "loginAccount", notes = "Login action to acquire access token", response = EmigoLogin.class, tags={ "accounts", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "account login", response = EmigoLogin.class),
-        @ApiResponse(code = 401, message = "invalid password"),
-        @ApiResponse(code = 404, message = "referenced account not found"),
-        @ApiResponse(code = 423, message = "account locked"),
-        @ApiResponse(code = 500, message = "internal server error") })
-    @RequestMapping(value = "/accounts/token",
-        produces = { "application/json" }, 
-        method = RequestMethod.GET)
-    ResponseEntity<EmigoLogin> loginAccount(@NotNull @ApiParam(value = "account password", required = true) @Valid @RequestParam(value = "password", required = true) String password
-,@ApiParam(value = "emigo identifier") @Valid @RequestParam(value = "emigoId", required = false) String emigoId
-,@ApiParam(value = "registered phone") @Valid @RequestParam(value = "phone", required = false) String phone
-,@ApiParam(value = "registered email") @Valid @RequestParam(value = "email", required = false) String email
-);
-
-
-    @ApiOperation(value = "", nickname = "logoutAccount", notes = "Logout action and force reset of access token", tags={ "accounts", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "token reset"),
-        @ApiResponse(code = 401, message = "invalid token"),
-        @ApiResponse(code = 423, message = "account locked"),
-        @ApiResponse(code = 500, message = "internal server error") })
-    @RequestMapping(value = "/accounts/token",
-        method = RequestMethod.PUT)
-    ResponseEntity<Void> logoutAccount(@NotNull @ApiParam(value = "access token", required = true) @Valid @RequestParam(value = "token", required = true) String token
-);
 
 
     @ApiOperation(value = "", nickname = "updateHandle", notes = "Update profile with registry message", response = Emigo.class, tags={ "accounts", })

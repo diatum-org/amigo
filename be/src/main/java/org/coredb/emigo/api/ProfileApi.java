@@ -38,18 +38,6 @@ public interface ProfileApi {
     ResponseEntity<Profile> availableProfile(@NotNull @ApiParam(value = "access token", required = true) @Valid @RequestParam(value = "token", required = true) String token,@NotNull @ApiParam(value = "whether account is searchable", required = true) @Valid @RequestParam(value = "flag", required = true) Boolean flag);
 
 
-    @ApiOperation(value = "", nickname = "emailProfile", notes = "Update account password", response = Profile.class, tags={ "profile", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "password updated", response = Profile.class),
-        @ApiResponse(code = 401, message = "invalid token"),
-        @ApiResponse(code = 423, message = "account locked"),
-        @ApiResponse(code = 500, message = "internal server error") })
-    @RequestMapping(value = "/profile/email",
-        produces = { "application/json" }, 
-        method = RequestMethod.PUT)
-    ResponseEntity<Profile> emailProfile(@NotNull @ApiParam(value = "access token", required = true) @Valid @RequestParam(value = "token", required = true) String token,@NotNull @ApiParam(value = "email address to update", required = true) @Valid @RequestParam(value = "emailAddress", required = true) String emailAddress);
-
-
     @ApiOperation(value = "", nickname = "getProfile", notes = "Retrieve current profile values", response = Profile.class, tags={ "profile", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "location updated", response = Profile.class),
@@ -85,30 +73,6 @@ public interface ProfileApi {
     ResponseEntity<Profile> gpsProfile(@ApiParam(value = "emigo to insert" ,required=true )  @Valid @RequestBody GpsLocation body,@NotNull @ApiParam(value = "access token", required = true) @Valid @RequestParam(value = "token", required = true) String token,@ApiParam(value = "expiration of location") @Valid @RequestParam(value = "expires", required = false) Long expires);
 
 
-    @ApiOperation(value = "", nickname = "passwordProfile", notes = "Update account password", tags={ "profile", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "password updated"),
-        @ApiResponse(code = 400, message = "password mismatch"),
-        @ApiResponse(code = 401, message = "invalid token"),
-        @ApiResponse(code = 423, message = "account locked"),
-        @ApiResponse(code = 500, message = "internal server error") })
-    @RequestMapping(value = "/profile/password",
-        method = RequestMethod.PUT)
-    ResponseEntity<Void> passwordProfile(@NotNull @ApiParam(value = "access token", required = true) @Valid @RequestParam(value = "token", required = true) String token,@NotNull @ApiParam(value = "account password", required = true) @Valid @RequestParam(value = "password", required = true) String password,@NotNull @ApiParam(value = "updated account password", required = true) @Valid @RequestParam(value = "update", required = true) String update);
-
-
-    @ApiOperation(value = "", nickname = "phoneProfile", notes = "Update account password", response = Profile.class, tags={ "profile", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "password updated", response = Profile.class),
-        @ApiResponse(code = 401, message = "invalid token"),
-        @ApiResponse(code = 423, message = "account locked"),
-        @ApiResponse(code = 500, message = "internal server error") })
-    @RequestMapping(value = "/profile/phone",
-        produces = { "application/json" }, 
-        method = RequestMethod.PUT)
-    ResponseEntity<Profile> phoneProfile(@NotNull @ApiParam(value = "access token", required = true) @Valid @RequestParam(value = "token", required = true) String token,@NotNull @ApiParam(value = "phone number to update", required = true) @Valid @RequestParam(value = "phoneNumber", required = true) String phoneNumber);
-
-
     @ApiOperation(value = "", nickname = "searchableProfile", notes = "Update searchable state", response = Profile.class, tags={ "profile", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "password updated", response = Profile.class),
@@ -120,29 +84,6 @@ public interface ProfileApi {
         method = RequestMethod.PUT)
     ResponseEntity<Profile> searchableProfile(@NotNull @ApiParam(value = "access token", required = true) @Valid @RequestParam(value = "token", required = true) String token,@NotNull @ApiParam(value = "whether account is searchable", required = true) @Valid @RequestParam(value = "flag", required = true) Boolean flag);
 
-
-    @ApiOperation(value = "", nickname = "confirmTrigger", notes = "Trigger account confirmation message", tags={ "profile", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "ok"),
-        @ApiResponse(code = 401, message = "invalid token"),
-        @ApiResponse(code = 404, message = "not found"),
-        @ApiResponse(code = 500, message = "internal server error") })
-    @RequestMapping(value = "/profile/confirm",
-        method = RequestMethod.PUT)
-    ResponseEntity<Void> confirmTrigger(@NotNull @ApiParam(value = "access token", required = true) @Valid @RequestParam(value = "token", required = true) String token
-);
-
-
-    @ApiOperation(value = "", nickname = "resetTrigger", notes = "Trigger password reset message", tags={ "profile", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "ok"),
-        @ApiResponse(code = 404, message = "not found"),
-        @ApiResponse(code = 500, message = "internal server error") })
-    @RequestMapping(value = "/profile/reset",
-        method = RequestMethod.PUT)
-    ResponseEntity<Void> resetTrigger(@ApiParam(value = "recovery phone number") @Valid @RequestParam(value = "phoneNumber", required = false) String phoneNumber
-,@ApiParam(value = "recovery email address") @Valid @RequestParam(value = "emailAddress", required = false) String emailAddress
-);
 
 }
 

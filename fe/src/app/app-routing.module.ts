@@ -11,14 +11,6 @@ const routes: Routes = [
   {
     path: 'console',
     loadChildren: () => import('./console/console.module').then(mod => mod.ConsoleModule)
-  },
-  {
-    path: 'confirm',
-    loadChildren: () => import('./confirm/confirm.module').then(mod => mod.ConfirmModule)
-  },
-  {
-    path: 'reset',
-    loadChildren: () => import('./reset/reset.module').then(mod => mod.ResetModule)
   }
 ];
 

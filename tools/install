@@ -45,10 +45,6 @@ sudo cp app.war /var/lib/tomcat9/webapps/
 sudo chown tomcat:tomcat /var/lib/tomcat9/webapps/app.war
 
 sudo mkdir /opt/emigo/
-sudo cp confirm_email.sh /opt/emigo/
-sudo cp confirm_phone.sh /opt/emigo/
-sudo cp reset_email.sh /opt/emigo/
-sudo cp reset_phone.sh /opt/emigo/
 sudo chown -R tomcat:tomcat /opt/emigo
 
 cp stat.sh /home/ubuntu

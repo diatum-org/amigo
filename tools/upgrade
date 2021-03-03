@@ -18,10 +18,6 @@ cp /var/lib/tomcat9/webapps/app.war /home/ubuntu/$REV/
 cp /opt/diatum/emigo.version /home/ubuntu/$REV/
 cp /home/ubuntu/stat.sh /home/ubuntu/$REV/
 cp /home/ubuntu/renew.sh /home/ubuntu/$REV/
-cp /opt/emigo/confirm_email.sh /home/ubuntu/$REV/
-cp /opt/emigo/confirm_phone.sh /home/ubuntu/$REV/
-cp /opt/emigo/reset_email.sh /home/ubuntu/$REV/
-cp /opt/emigo/reset_phone.sh /home/ubuntu/$REV/
 crontab -l > /home/ubuntu/$REV/crontab.l
 
 # migrate backup
@@ -43,12 +39,6 @@ done
 
 # update app
 sudo -u tomcat cp app.war /var/lib/tomcat9/webapps/
-
-# update scripts
-sudo -u cp confirm_email.sh /opt/emigo/
-sudo -u cp confirm_phone.sh /opt/emigo/
-sudo -u cp reset_email.sh /opt/emigo/
-sudo -u cp reset_phone.sh /opt/emigo/
 
 echo "{ \"major\": $MAJOR, \"minor\": $MINOR, \"build\": $BUILD, \"schema\": $BUNDLE_SCHEMA }" > /opt/diatum/emigo.version
 

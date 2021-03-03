@@ -73,26 +73,6 @@ public class ProfileApiController implements ProfileApi {
       }
     }
         
-    public ResponseEntity<Profile> emailProfile(@NotNull @ApiParam(value = "access token", required = true) @Valid @RequestParam(value = "token", required = true) String token,@NotNull @ApiParam(value = "email address to update", required = true) @Valid @RequestParam(value = "emailAddress", required = true) String emailAddress) {
-      try {
-        Account account = authService.loginToken(token);
-        Profile profile = profileService.setEmail(account, emailAddress);
-        return new ResponseEntity<Profile>(profile, HttpStatus.OK);
-      }
-      catch(InvalidParameterException e) {
-        log.error(e.toString());
-        return new ResponseEntity<Profile>(HttpStatus.UNAUTHORIZED); //401
-      }
-      catch(NotAcceptableException e) {
-        log.error(e.toString());
-        return new ResponseEntity<Profile>(HttpStatus.NOT_ACCEPTABLE); //423
-      }
-      catch(Exception e) {
-        log.error(e.toString());
-        return new ResponseEntity<Profile>(HttpStatus.INTERNAL_SERVER_ERROR); //500
-      }
-    }
-
     public ResponseEntity<Profile> getProfile(@NotNull @ApiParam(value = "access token", required = true) @Valid @RequestParam(value = "token", required = true) String token) {
       try {
         Account account = authService.loginToken(token);
@@ -153,50 +133,6 @@ public class ProfileApiController implements ProfileApi {
       }
     }
 
-    public ResponseEntity<Void> passwordProfile(@NotNull @ApiParam(value = "access token", required = true) @Valid @RequestParam(value = "token", required = true) String token,@NotNull @ApiParam(value = "account password", required = true) @Valid @RequestParam(value = "password", required = true) String password,@NotNull @ApiParam(value = "updated account password", required = true) @Valid @RequestParam(value = "update", required = true) String update) {
-      try {
-        Account account = authService.loginToken(token);
-        profileService.setPassword(account, password, update);
-        return new ResponseEntity<Void>(HttpStatus.OK);
-      }
-      catch(InvalidParameterException e) {
-        log.error(e.toString());
-        return new ResponseEntity<Void>(HttpStatus.UNAUTHORIZED); //401
-      }
-      catch(IllegalArgumentException e) {
-        log.error(e.toString());
-        return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST); //400
-      }
-      catch(NotAcceptableException e) {
-        log.error(e.toString());
-        return new ResponseEntity<Void>(HttpStatus.NOT_ACCEPTABLE); //423
-      }
-      catch(Exception e) {
-        log.error(e.toString());
-        return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR); //500
-      }
-    }
-
-    public ResponseEntity<Profile> phoneProfile(@NotNull @ApiParam(value = "access token", required = true) @Valid @RequestParam(value = "token", required = true) String token,@NotNull @ApiParam(value = "phone number to update", required = true) @Valid @RequestParam(value = "phoneNumber", required = true) String phoneNumber) {
-      try {
-        Account account = authService.loginToken(token);
-        Profile profile = profileService.setPhone(account, phoneNumber);
-        return new ResponseEntity<Profile>(profile, HttpStatus.OK);
-      }
-      catch(InvalidParameterException e) {
-        log.error(e.toString());
-        return new ResponseEntity<Profile>(HttpStatus.UNAUTHORIZED); //401
-      }
-      catch(NotAcceptableException e) {
-        log.error(e.toString());
-        return new ResponseEntity<Profile>(HttpStatus.NOT_ACCEPTABLE); //423
-      }
-      catch(Exception e) {
-        log.error(e.toString());
-        return new ResponseEntity<Profile>(HttpStatus.INTERNAL_SERVER_ERROR); //500
-      }
-    }
-
     public ResponseEntity<Profile> searchableProfile(@NotNull @ApiParam(value = "access token", required = true) @Valid @RequestParam(value = "token", required = true) String token,@NotNull @ApiParam(value = "whether account is searchable", required = true) @Valid @RequestParam(value = "flag", required = true) Boolean flag) {
     try {
         Account account = authService.loginToken(token);
@@ -216,39 +152,6 @@ public class ProfileApiController implements ProfileApi {
         return new ResponseEntity<Profile>(HttpStatus.INTERNAL_SERVER_ERROR); //500
       }
     }
-
-    public ResponseEntity<Void> confirmTrigger(@NotNull @ApiParam(value = "access token", required = true) @Valid @RequestParam(value = "token", required = true) String token
-) {
-    try {
-      Account account = authService.loginToken(token);
-      profileService.confirmContact(account);
-      return new ResponseEntity<Void>(HttpStatus.OK);
-    }
-    catch(InvalidParameterException e) {
-      return new ResponseEntity<Void>(HttpStatus.UNAUTHORIZED); //401
-    }
-    catch(NotAcceptableException e) {
-      return new ResponseEntity<Void>(HttpStatus.NOT_ACCEPTABLE); //423
-    }
-    catch(Exception e) {
-      return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR); //500
-    }
-  }
-
-    public ResponseEntity<Void> resetTrigger(@ApiParam(value = "recovery phone number") @Valid @RequestParam(value = "phoneNumber", required = false) String phoneNumber
-,@ApiParam(value = "recovery email address") @Valid @RequestParam(value = "emailAddress", required = false) String emailAddress
-) {
-    try {
-      profileService.resetPassword(emailAddress, phoneNumber);
-      return new ResponseEntity<Void>(HttpStatus.OK);
-    }
-    catch(NotFoundException e) {
-      return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
-    }
-    catch(Exception e) {
-      return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-  }
 
 }
 

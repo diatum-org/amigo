@@ -13,8 +13,7 @@ export class ConfigComponent implements OnInit {
 
   private token: string = null;
   public configSet: boolean = false;
-  public config: AppConfig = { region: "", sourceEmail: "", accessId: "", accessKey: "", consoleToken: "",
-      statToken: "", appNode: "", appToken: "", clusterUrl: "", clusterToken: "", slotToken: "" };
+  public config: AppConfig = { consoleToken: "", appNode: "", appToken: "" };
 
   constructor(private consoleService: ConsoleService,
       private dialog: MatDialog,

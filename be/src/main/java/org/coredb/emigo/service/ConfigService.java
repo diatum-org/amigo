@@ -1,3 +1,4 @@
+
 package org.coredb.emigo.service;
 
 import java.util.*;
@@ -93,5 +94,6 @@ public class ConfigService {
     return serverConfigs.get(configId);
   }
 }
+
 
 
