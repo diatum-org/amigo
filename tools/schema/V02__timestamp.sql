@@ -1,5 +1,17 @@
 alter table account add column create_timestamp bigint(64);
 
+alter table account drop column password;
+alter table account drop column salt;
+alter table account drop column phone_number;
+alter table account drop column confirmed_phone;
+alter table account drop column email_address;
+alter table account drop column confirmed_email;
+alter table account drop column reset_token;
+alter table account drop column reset_issued;
+alter table account drop column reset_expires;
+
+drop table pass;
+
 create index name_index on account(name);
 create index handle_index on account(handle);
 create index location_index on account(location);
