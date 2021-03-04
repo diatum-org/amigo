@@ -38,8 +38,7 @@ public interface AccountsApi {
     @RequestMapping(value = "/accounts/attached",
         produces = { "application/json" }, 
         method = RequestMethod.POST)
-    ResponseEntity<EmigoLogin> attachAccount(@NotNull @ApiParam(value = "password to use for login", required = true) @Valid @RequestParam(value = "password", required = true) String password
-,@NotNull @ApiParam(value = "id of emigo to be attached", required = true) @Valid @RequestParam(value = "emigoId", required = true) String emigoId
+    ResponseEntity<EmigoLogin> attachAccount(@NotNull @ApiParam(value = "id of emigo to be attached", required = true) @Valid @RequestParam(value = "emigoId", required = true) String emigoId
 ,@NotNull @ApiParam(value = "single use code", required = true) @Valid @RequestParam(value = "code", required = true) String code
 ,@NotNull @ApiParam(value = "node to forward request to", required = true) @Valid @RequestParam(value = "node", required = true) String node
 );
