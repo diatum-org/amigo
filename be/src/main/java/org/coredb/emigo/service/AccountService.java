@@ -153,7 +153,7 @@ public class AccountService {
     // construct rquest url
     String url = registry + "/amigo/messages?";
     if(emigoId != null) {
-      url += "emigoId=" + emigoId;
+      url += "amigoId=" + emigoId;
     }
     else if(handle != null) {
       url += "handle=" + handle;
