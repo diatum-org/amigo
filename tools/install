@@ -65,7 +65,7 @@ mysql -u root -proot emigo -e "insert into config (config_id, string_value) valu
 mysql -u root -proot emigo -e "insert into config (config_id, string_value) values ('console_token', '$TOKEN')"
 
 crontab -r || true
-echo -e '*/15 * * * * bash /home/ubuntu/stat.sh\n3 3 * * * bash /home/ubuntu/synccert.sh' | crontab
+echo -e '*/15 * * * * bash /home/ubuntu/stat.sh\n3 3 * * * bash /home/ubuntu/synccert.sh\n4 4 * * * bash /home/ubuntu/backup.sh' | crontab
 
 sudo bash /home/ubuntu/renew.sh
 
