@@ -97,7 +97,7 @@ public class AccountService {
     // construct request url
     String token = configService.getServerStringValue(SC_APP_TOKEN, null);
     String base = configService.getServerStringValue(SC_APP_NODE, null);
-    String url = base + "/access/services/attached?token=" + token + "&emigoId=" + emigoId;
+    String url = base + "/access/services/attached?token=" + token + "&amigoId=" + emigoId;
 
     // construct rest post
     RestTemplate rest = new RestTemplate();
@@ -123,7 +123,7 @@ public class AccountService {
   private AmigoToken attachAccount(String base, String emigoId, LinkMessage link, String pass) throws RestClientException {
   
     // construct request url
-    String url = base + "/access/accounts/attached?pass=" + pass + "&emigoId=" + emigoId;
+    String url = base + "/access/accounts/attached?pass=" + pass + "&amigoId=" + emigoId;
 
     // construct rest post
     RestTemplate rest = new RestTemplate();
@@ -151,7 +151,7 @@ public class AccountService {
   private AmigoMessage getMessage(String emigoId, String handle, String registry) throws RestClientException, IllegalArgumentException {
    
     // construct rquest url
-    String url = registry + "/emigo/messages?";
+    String url = registry + "/amigo/messages?";
     if(emigoId != null) {
       url += "emigoId=" + emigoId;
     }
