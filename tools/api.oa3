@@ -3,12 +3,12 @@ openapi: 3.0.0
 # Added by API Auto Mocking Plugin
 info:
   description:
-    An interface to a emigo app of distributed nodes for personal storage.
-      emigo-id - hex encoded sha256 of an emigo 4096 public key
-      emigo-key - hex encoded public key
+    An interface to a amigo app of distributed nodes for personal storage.
+      amigo-id - hex encoded sha256 of an amigo 4096 public key
+      amigo-key - hex encoded public key
 
   version: "1.0.4"
-  title: Digital Archive Emigo App Server API
+  title: Digital Archive Amigo App Server API
   contact:
     email: rosborne@coredb.org
   license:
@@ -220,16 +220,16 @@ paths:
     post:
       tags:
         - accounts
-      description: Create new emigo account and in turn attach an existing db account
+      description: Create new amigo account and in turn attach an existing db account
       operationId: attach-account
       parameters:
-        - name: emigoId
+        - name: amigoId
           in: query
-          description: id of emigo to be attached
+          description: id of amigo to be attached
           required: true
           schema:
             type: string
-            format: emigo-id
+            format: amigo-id
         - name: code
           in: query
           description: single use code
@@ -255,7 +255,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EmigoLogin'
+                $ref: '#/components/schemas/AmigoLogin'
         '406':
           description: account limit reached
         '500':
@@ -294,7 +294,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Emigo'
+                $ref: '#/components/schemas/Amigo'
         '400':
           description: invalid message message received
         '423':
@@ -438,7 +438,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/GpsLocation'
-        description: emigo to insert
+        description: amigo to insert
         required: true
 
   /profile/revision:
@@ -601,7 +601,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/SearchArea'
-        description: emigo to insert
+        description: amigo to insert
         required: true
 
 components:
@@ -696,15 +696,15 @@ components:
     NodeConnection:
       type: object
       required:
-        - emigoId
+        - amigoId
         - node
         - handle
         - registry
         - token
       properties:
-        emigoId:
+        amigoId:
           type: string
-          format: emigo-id
+          format: amigo-id
         node:
           type: string
           format: base url
@@ -717,7 +717,7 @@ components:
           type: string
           format: secure-token
 
-    EmigoLogin:
+    AmigoLogin:
       type: object
       required:
         - token
@@ -735,15 +735,15 @@ components:
     Contact:
       type: object
       required:
-        - emigoId
+        - amigoId
         - node
         - revision
         - version
         - available
       properties:
-        emigoId:
+        amigoId:
           type: string
-          format: emigoId
+          format: amigoId
         name:
           type: string
         description:
@@ -770,17 +770,17 @@ components:
         available:
           type: boolean
 
-    Emigo:
+    Amigo:
       type: object
       required:
-        - emigoId
+        - amigoId
         - node
         - revision
         - version
       properties:
-        emigoId:
+        amigoId:
           type: string
-          format: emigoId
+          format: amigoId
         name:
           type: string
         description:
@@ -805,19 +805,19 @@ components:
         handle:
           type: string
 
-    EmigoToken:
+    AmigoToken:
       type: object
       required:
-        - emigoId
-        - emigo
+        - amigoId
+        - amigo
         - signature
         - token
       properties:
-        emigoId:
+        amigoId:
           type: string
-          format: emigo-id
-        emigo:
-          $ref: '#/components/schemas/EmigoMessage'
+          format: amigo-id
+        amigo:
+          $ref: '#/components/schemas/AmigoMessage'
         signature:
           type: string
           format: signature
@@ -825,7 +825,7 @@ components:
           type: string
           format: Base64 & JSON serialized string of token
 
-    EmigoMessage:
+    AmigoMessage:
       type: object
       required:
         - key
@@ -835,7 +835,7 @@ components:
       properties:
         key:
           type: string
-          format: emigo-key
+          format: amigo-key
         keyType:
           type: string
         signature:
@@ -848,13 +848,13 @@ components:
     UserEntry:
       type: object
       required:
-        - emigoId
+        - amigoId
         - accountToken
         - serviceToken
       properties:
-        emigoId:
+        amigoId:
           type: string
-          format: emigo-id
+          format: amigo-id
         accountToken:
           type: string
           format: secure-token
@@ -878,12 +878,12 @@ components:
     LinkMessage:
       type: object
       required:
-        - emigo
+        - amigo
         - signature
         - link
       properties:
-        emigo:
-          $ref: '#/components/schemas/EmigoMessage'
+        amigo:
+          $ref: '#/components/schemas/AmigoMessage'
         signature:
           type: string
           format: signature
@@ -927,14 +927,14 @@ components:
     AttachLink:
       type: object
       required:
-        - emigoId
+        - amigoId
         - access
         - expires
         - issued
       properties:
-        emigoId:
+        amigoId:
           type: string
-          format: emigo-id
+          format: amigo-id
         access:
           $ref: '#/components/schemas/ServiceAccess'
         expires:
