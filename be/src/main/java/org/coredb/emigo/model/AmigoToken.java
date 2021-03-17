@@ -5,68 +5,70 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.coredb.emigo.model.AmigoMessage;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * EmigoMessage
+ * AmigoToken
  */
 @Validated
-public class EmigoMessage   {
-  @JsonProperty("key")
-  private String key = null;
+public class AmigoToken   {
+  @JsonProperty("amigoId")
+  private String amigoId = null;
 
-  @JsonProperty("keyType")
-  private String keyType = null;
+  @JsonProperty("amigo")
+  private AmigoMessage amigo = null;
 
   @JsonProperty("signature")
   private String signature = null;
 
-  @JsonProperty("data")
-  private String data = null;
+  @JsonProperty("token")
+  private String token = null;
 
-  public EmigoMessage key(String key) {
-    this.key = key;
+  public AmigoToken amigoId(String amigoId) {
+    this.amigoId = amigoId;
     return this;
   }
 
   /**
-   * Get key
-   * @return key
+   * Get amigoId
+   * @return amigoId
   **/
   @ApiModelProperty(required = true, value = "")
-  @NotNull
+      @NotNull
 
-  public String getKey() {
-    return key;
+    public String getAmigoId() {
+    return amigoId;
   }
 
-  public void setKey(String key) {
-    this.key = key;
+  public void setAmigoId(String amigoId) {
+    this.amigoId = amigoId;
   }
 
-  public EmigoMessage keyType(String keyType) {
-    this.keyType = keyType;
+  public AmigoToken amigo(AmigoMessage amigo) {
+    this.amigo = amigo;
     return this;
   }
 
   /**
-   * Get keyType
-   * @return keyType
+   * Get amigo
+   * @return amigo
   **/
   @ApiModelProperty(required = true, value = "")
-  @NotNull
+      @NotNull
 
-  public String getKeyType() {
-    return keyType;
+    @Valid
+    public AmigoMessage getAmigo() {
+    return amigo;
   }
 
-  public void setKeyType(String keyType) {
-    this.keyType = keyType;
+  public void setAmigo(AmigoMessage amigo) {
+    this.amigo = amigo;
   }
 
-  public EmigoMessage signature(String signature) {
+  public AmigoToken signature(String signature) {
     this.signature = signature;
     return this;
   }
@@ -76,9 +78,9 @@ public class EmigoMessage   {
    * @return signature
   **/
   @ApiModelProperty(required = true, value = "")
-  @NotNull
+      @NotNull
 
-  public String getSignature() {
+    public String getSignature() {
     return signature;
   }
 
@@ -86,24 +88,24 @@ public class EmigoMessage   {
     this.signature = signature;
   }
 
-  public EmigoMessage data(String data) {
-    this.data = data;
+  public AmigoToken token(String token) {
+    this.token = token;
     return this;
   }
 
   /**
-   * Get data
-   * @return data
+   * Get token
+   * @return token
   **/
   @ApiModelProperty(required = true, value = "")
-  @NotNull
+      @NotNull
 
-  public String getData() {
-    return data;
+    public String getToken() {
+    return token;
   }
 
-  public void setData(String data) {
-    this.data = data;
+  public void setToken(String token) {
+    this.token = token;
   }
 
 
@@ -115,27 +117,27 @@ public class EmigoMessage   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    EmigoMessage emigoMessage = (EmigoMessage) o;
-    return Objects.equals(this.key, emigoMessage.key) &&
-        Objects.equals(this.keyType, emigoMessage.keyType) &&
-        Objects.equals(this.signature, emigoMessage.signature) &&
-        Objects.equals(this.data, emigoMessage.data);
+    AmigoToken amigoToken = (AmigoToken) o;
+    return Objects.equals(this.amigoId, amigoToken.amigoId) &&
+        Objects.equals(this.amigo, amigoToken.amigo) &&
+        Objects.equals(this.signature, amigoToken.signature) &&
+        Objects.equals(this.token, amigoToken.token);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(key, keyType, signature, data);
+    return Objects.hash(amigoId, amigo, signature, token);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class EmigoMessage {\n");
+    sb.append("class AmigoToken {\n");
     
-    sb.append("    key: ").append(toIndentedString(key)).append("\n");
-    sb.append("    keyType: ").append(toIndentedString(keyType)).append("\n");
+    sb.append("    amigoId: ").append(toIndentedString(amigoId)).append("\n");
+    sb.append("    amigo: ").append(toIndentedString(amigo)).append("\n");
     sb.append("    signature: ").append(toIndentedString(signature)).append("\n");
-    sb.append("    data: ").append(toIndentedString(data)).append("\n");
+    sb.append("    token: ").append(toIndentedString(token)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -151,3 +153,4 @@ public class EmigoMessage   {
     return o.toString().replace("\n", "\n    ");
   }
 }
+

@@ -52,11 +52,11 @@ public class SearchApiController implements SearchApi {
         this.request = request;
     }
 
-    public ResponseEntity<List<Contact>> scanAccounts(@ApiParam(value = "emigo to insert" ,required=true )  @Valid @RequestBody SearchArea body,@NotNull @ApiParam(value = "login token", required = true) @Valid @RequestParam(value = "token", required = true) String token,@NotNull  @DecimalMax("1024") @ApiParam(value = "return max number of results", required = true) @Valid @RequestParam(value = "limit", required = true) Integer limit,@ApiParam(value = "return results starting at offset") @Valid @RequestParam(value = "offset", required = false) Integer offset) {
+    public ResponseEntity<List<Contact>> scanAccounts(@ApiParam(value = "amigo to insert" ,required=true )  @Valid @RequestBody SearchArea body,@NotNull @ApiParam(value = "login token", required = true) @Valid @RequestParam(value = "token", required = true) String token,@NotNull  @DecimalMax("1024") @ApiParam(value = "return max number of results", required = true) @Valid @RequestParam(value = "limit", required = true) Integer limit,@ApiParam(value = "return results starting at offset") @Valid @RequestParam(value = "offset", required = false) Integer offset) {
        try {
         Account account = authService.loginToken(token);
-        List<Contact> emigos = searchService.search(account, null, null, null, null, body, offset, limit);
-        return new ResponseEntity<List<Contact>>(emigos, HttpStatus.OK);
+        List<Contact> amigos = searchService.search(account, null, null, null, null, body, offset, limit);
+        return new ResponseEntity<List<Contact>>(amigos, HttpStatus.OK);
       }
       catch(InvalidParameterException e) {
         log.error(e.toString());
@@ -75,8 +75,8 @@ public class SearchApiController implements SearchApi {
     public ResponseEntity<List<Contact>> searchAccounts(@NotNull @ApiParam(value = "login token", required = true) @Valid @RequestParam(value = "token", required = true) String token,@NotNull  @DecimalMax("1024") @ApiParam(value = "return max number of results", required = true) @Valid @RequestParam(value = "limit", required = true) Integer limit,@ApiParam(value = "or-set of matching name, handle, location, description") @Valid @RequestParam(value = "match", required = false) String match,@ApiParam(value = "filter with name like") @Valid @RequestParam(value = "name", required = false) String name,@ApiParam(value = "filter with handle like") @Valid @RequestParam(value = "handle", required = false) String handle,@ApiParam(value = "filter with description like") @Valid @RequestParam(value = "description", required = false) String description,@ApiParam(value = "filter with location like") @Valid @RequestParam(value = "location", required = false) String location,@ApiParam(value = "return results starting at offset") @Valid @RequestParam(value = "offset", required = false) Integer offset) {
       try {
         Account account = authService.loginToken(token);
-        List<Contact> emigos = searchService.search(account, match, name, description, location, null, offset, limit);
-        return new ResponseEntity<List<Contact>>(emigos, HttpStatus.OK);
+        List<Contact> amigos = searchService.search(account, match, name, description, location, null, offset, limit);
+        return new ResponseEntity<List<Contact>>(amigos, HttpStatus.OK);
       }
       catch(InvalidParameterException e) {
         log.error(e.toString());

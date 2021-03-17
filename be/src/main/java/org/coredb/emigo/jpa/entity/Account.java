@@ -1,7 +1,7 @@
 package org.coredb.emigo.jpa.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.coredb.emigo.model.Emigo;
+import org.coredb.emigo.model.Amigo;
 import org.coredb.emigo.model.Contact;
 import org.coredb.emigo.model.UserEntry;
 
@@ -29,13 +29,13 @@ public class Account extends Contact implements Serializable {
     this.profileRevision = 0;
   }
 
-  public Account(Emigo emigo, String login, String account, String service, Long timestamp) {
+  public Account(Amigo emigo, String login, String account, String service, Long timestamp) {
     update(emigo, login, account, service, timestamp);
   }
 
   @Transient
-  public void update(Emigo emigo, String login, String account, String service, Long timestamp) {
-    super.setEmigoId(emigo.getEmigoId());
+  public void update(Amigo emigo, String login, String account, String service, Long timestamp) {
+    super.setAmigoId(emigo.getAmigoId());
     super.setName(emigo.getName());
     super.setDescription(emigo.getDescription());
     super.setLogo(emigo.getLogo());
@@ -56,9 +56,9 @@ public class Account extends Contact implements Serializable {
   }
 
   @Transient
-  public void update(Emigo emigo) {
+  public void update(Amigo emigo) {
     if(emigo.getRevision() > super.getRevision()) {
-      super.setEmigoId(emigo.getEmigoId());
+      super.setAmigoId(emigo.getAmigoId());
       super.setName(emigo.getName());
       super.setDescription(emigo.getDescription());
       super.setLogo(emigo.getLogo());
@@ -84,10 +84,10 @@ public class Account extends Contact implements Serializable {
 
   @JsonIgnore
   public String getEmigoId() {
-    return super.getEmigoId();
+    return super.getAmigoId();
   }
   public void setEmigoId(String value) {
-    super.setEmigoId(value);
+    super.setAmigoId(value);
   }
 
   @JsonIgnore

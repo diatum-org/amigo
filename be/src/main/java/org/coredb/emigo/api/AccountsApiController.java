@@ -1,8 +1,8 @@
 package org.coredb.emigo.api;
 
-import org.coredb.emigo.model.EmigoLogin;
+import org.coredb.emigo.model.AmigoLogin;
 import org.coredb.emigo.model.Result;
-import org.coredb.emigo.model.Emigo;
+import org.coredb.emigo.model.Amigo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
@@ -55,29 +55,29 @@ public class AccountsApiController implements AccountsApi {
         this.request = request;
     }
 
-    public ResponseEntity<EmigoLogin> attachAccount(@NotNull @ApiParam(value = "id of emigo to be attached", required = true) @Valid @RequestParam(value = "emigoId", required = true) String emigoId
+    public ResponseEntity<AmigoLogin> attachAccount(@NotNull @ApiParam(value = "id of amigo to be attached", required = true) @Valid @RequestParam(value = "amigoId", required = true) String amigoId
 ,@NotNull @ApiParam(value = "single use code", required = true) @Valid @RequestParam(value = "code", required = true) String code
 ,@NotNull @ApiParam(value = "node to forward request to", required = true) @Valid @RequestParam(value = "node", required = true) String node
 ) {
       try {
-        EmigoLogin emigo = accountService.attach(emigoId, node, code);
-        return new ResponseEntity<EmigoLogin>(emigo, HttpStatus.CREATED);
+        AmigoLogin amigo = accountService.attach(amigoId, node, code);
+        return new ResponseEntity<AmigoLogin>(amigo, HttpStatus.CREATED);
       }  
       catch(java.security.InvalidParameterException e) {
         log.error(e.toString());
-        return new ResponseEntity<EmigoLogin>(HttpStatus.UNAUTHORIZED); //401
+        return new ResponseEntity<AmigoLogin>(HttpStatus.UNAUTHORIZED); //401
       }
       catch(IOException e) {
         log.error(e.toString());
-        return new ResponseEntity<EmigoLogin>(HttpStatus.NOT_ACCEPTABLE); //406
+        return new ResponseEntity<AmigoLogin>(HttpStatus.NOT_ACCEPTABLE); //406
       }
       catch(RestClientException e) {
         log.error(e.toString());
-        return new ResponseEntity<EmigoLogin>(HttpStatus.SERVICE_UNAVAILABLE); //503
+        return new ResponseEntity<AmigoLogin>(HttpStatus.SERVICE_UNAVAILABLE); //503
       }
       catch(Exception e) {
         log.error(e.toString());
-        return new ResponseEntity<EmigoLogin>(HttpStatus.INTERNAL_SERVER_ERROR); //500
+        return new ResponseEntity<AmigoLogin>(HttpStatus.INTERNAL_SERVER_ERROR); //500
       }
     }
 
@@ -109,31 +109,31 @@ public class AccountsApiController implements AccountsApi {
       }
     }
 
-    public ResponseEntity<Emigo> updateHandle(@NotNull @ApiParam(value = "login token", required = true) @Valid @RequestParam(value = "token", required = true) String token,@NotNull @ApiParam(value = "registry base url", required = true) @Valid @RequestParam(value = "registry", required = true) String registry,@ApiParam(value = "current revision") @Valid @RequestParam(value = "revision", required = false) Integer revision) {
+    public ResponseEntity<Amigo> updateHandle(@NotNull @ApiParam(value = "login token", required = true) @Valid @RequestParam(value = "token", required = true) String token,@NotNull @ApiParam(value = "registry base url", required = true) @Valid @RequestParam(value = "registry", required = true) String registry,@ApiParam(value = "current revision") @Valid @RequestParam(value = "revision", required = false) Integer revision) {
       try {
         Account act = authService.loginToken(token);
-        Emigo emigo = accountService.update(act, registry, revision);
-        return new ResponseEntity<Emigo>(emigo, HttpStatus.OK);
+        Amigo amigo = accountService.update(act, registry, revision);
+        return new ResponseEntity<Amigo>(amigo, HttpStatus.OK);
       }
       catch(InvalidParameterException e) {
         log.error(e.toString());
-        return new ResponseEntity<Emigo>(HttpStatus.UNAUTHORIZED); //401
+        return new ResponseEntity<Amigo>(HttpStatus.UNAUTHORIZED); //401
       }
       catch(IllegalArgumentException e) {
         log.error(e.toString());
-        return new ResponseEntity<Emigo>(HttpStatus.BAD_REQUEST); //400
+        return new ResponseEntity<Amigo>(HttpStatus.BAD_REQUEST); //400
       }
       catch(NotAcceptableException e) {
         log.error(e.toString());
-        return new ResponseEntity<Emigo>(HttpStatus.LOCKED); //423
+        return new ResponseEntity<Amigo>(HttpStatus.LOCKED); //423
       }
       catch(RestClientException e) {
         log.error(e.toString());
-        return new ResponseEntity<Emigo>(HttpStatus.SERVICE_UNAVAILABLE); //503
+        return new ResponseEntity<Amigo>(HttpStatus.SERVICE_UNAVAILABLE); //503
       }
       catch(Exception e) {
         log.error(e.toString());
-        return new ResponseEntity<Emigo>(HttpStatus.INTERNAL_SERVER_ERROR); //500
+        return new ResponseEntity<Amigo>(HttpStatus.INTERNAL_SERVER_ERROR); //500
       }
     }       
 }

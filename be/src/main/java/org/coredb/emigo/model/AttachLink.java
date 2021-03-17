@@ -15,8 +15,8 @@ import javax.validation.constraints.*;
  */
 @Validated
 public class AttachLink   {
-  @JsonProperty("emigoId")
-  private String emigoId = null;
+  @JsonProperty("amigoId")
+  private String amigoId = null;
 
   @JsonProperty("access")
   private ServiceAccess access = null;
@@ -27,24 +27,24 @@ public class AttachLink   {
   @JsonProperty("issued")
   private Long issued = null;
 
-  public AttachLink emigoId(String emigoId) {
-    this.emigoId = emigoId;
+  public AttachLink amigoId(String amigoId) {
+    this.amigoId = amigoId;
     return this;
   }
 
   /**
-   * Get emigoId
-   * @return emigoId
+   * Get amigoId
+   * @return amigoId
   **/
   @ApiModelProperty(required = true, value = "")
   @NotNull
 
-  public String getEmigoId() {
-    return emigoId;
+  public String getAmigoId() {
+    return amigoId;
   }
 
-  public void setEmigoId(String emigoId) {
-    this.emigoId = emigoId;
+  public void setAmigoId(String amigoId) {
+    this.amigoId = amigoId;
   }
 
   public AttachLink access(ServiceAccess access) {
@@ -118,7 +118,7 @@ public class AttachLink   {
       return false;
     }
     AttachLink attachLink = (AttachLink) o;
-    return Objects.equals(this.emigoId, attachLink.emigoId) &&
+    return Objects.equals(this.amigoId, attachLink.amigoId) &&
         Objects.equals(this.access, attachLink.access) &&
         Objects.equals(this.expires, attachLink.expires) &&
         Objects.equals(this.issued, attachLink.issued);
@@ -126,7 +126,7 @@ public class AttachLink   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(emigoId, access, expires, issued);
+    return Objects.hash(amigoId, access, expires, issued);
   }
 
   @Override
@@ -134,7 +134,7 @@ public class AttachLink   {
     StringBuilder sb = new StringBuilder();
     sb.append("class AttachLink {\n");
     
-    sb.append("    emigoId: ").append(toIndentedString(emigoId)).append("\n");
+    sb.append("    amigoId: ").append(toIndentedString(amigoId)).append("\n");
     sb.append("    access: ").append(toIndentedString(access)).append("\n");
     sb.append("    expires: ").append(toIndentedString(expires)).append("\n");
     sb.append("    issued: ").append(toIndentedString(issued)).append("\n");

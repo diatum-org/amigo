@@ -18,12 +18,12 @@ import org.apache.commons.codec.binary.Hex;
 
 import javax.ws.rs.NotAcceptableException;
 
-import org.coredb.emigo.model.Emigo;
-import org.coredb.emigo.model.EmigoMessage;
+import org.coredb.emigo.model.Amigo;
+import org.coredb.emigo.model.AmigoMessage;
 
 public class EmigoUtil {
 
-  public static Emigo getObject(EmigoMessage msg) throws IllegalArgumentException, Exception {
+  public static Amigo getObject(AmigoMessage msg) throws IllegalArgumentException, Exception {
 
     if(msg.getKey() == null || msg.getKeyType() == null || msg.getData() == null || msg.getSignature() == null) {
       throw new IllegalArgumentException("incomplete emigo message");
@@ -38,22 +38,22 @@ public class EmigoUtil {
     }
 
     //populate data entry
-    Emigo emigo = decode(msg.getData());
+    Amigo emigo = decode(msg.getData());
 
     //validate key and id
-    if(!emigo.getEmigoId().equals(id(key))) {
+    if(!emigo.getAmigoId().equals(id(key))) {
       throw new IllegalArgumentException("emigo key id mismatch");
     }
 
     return emigo;
   }
 
-  private static Emigo decode(String base) throws IllegalArgumentException {
+  private static Amigo decode(String base) throws IllegalArgumentException {
     try {
       byte[] bytes = Base64.getDecoder().decode(base);
       String serial = new String(bytes);
       ObjectMapper mapper = new ObjectMapper();
-      return mapper.readValue(serial, Emigo.class);
+      return mapper.readValue(serial, Amigo.class);
     }
     catch(Exception e) {
       throw new IllegalArgumentException("invalid emigo message");

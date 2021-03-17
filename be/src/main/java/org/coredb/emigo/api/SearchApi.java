@@ -36,7 +36,7 @@ public interface SearchApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<List<Contact>> scanAccounts(@ApiParam(value = "emigo to insert" ,required=true )  @Valid @RequestBody SearchArea body,@NotNull @ApiParam(value = "login token", required = true) @Valid @RequestParam(value = "token", required = true) String token,@NotNull  @DecimalMax("1024") @ApiParam(value = "return max number of results", required = true) @Valid @RequestParam(value = "limit", required = true) Integer limit,@ApiParam(value = "return results starting at offset") @Valid @RequestParam(value = "offset", required = false) Integer offset);
+    ResponseEntity<List<Contact>> scanAccounts(@ApiParam(value = "amigo to insert" ,required=true )  @Valid @RequestBody SearchArea body,@NotNull @ApiParam(value = "login token", required = true) @Valid @RequestParam(value = "token", required = true) String token,@NotNull  @DecimalMax("1024") @ApiParam(value = "return max number of results", required = true) @Valid @RequestParam(value = "limit", required = true) Integer limit,@ApiParam(value = "return results starting at offset") @Valid @RequestParam(value = "offset", required = false) Integer offset);
 
 
     @ApiOperation(value = "", nickname = "searchAccounts", notes = "Search accounts according to criteria", response = Contact.class, responseContainer = "List", tags={ "search", })

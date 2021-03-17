@@ -14,8 +14,8 @@ import javax.validation.constraints.*;
  */
 @Validated
 public class Contact   {
-  @JsonProperty("emigoId")
-  private String emigoId = null;
+  @JsonProperty("amigoId")
+  private String amigoId = null;
 
   @JsonProperty("name")
   private String name = null;
@@ -47,24 +47,24 @@ public class Contact   {
   @JsonProperty("available")
   private Boolean available = null;
 
-  public Contact emigoId(String emigoId) {
-    this.emigoId = emigoId;
+  public Contact amigoId(String amigoId) {
+    this.amigoId = amigoId;
     return this;
   }
 
   /**
-   * Get emigoId
-   * @return emigoId
+   * Get amigoId
+   * @return amigoId
   **/
   @ApiModelProperty(required = true, value = "")
       @NotNull
 
-    public String getEmigoId() {
-    return emigoId;
+    public String getAmigoId() {
+    return amigoId;
   }
 
-  public void setEmigoId(String emigoId) {
-    this.emigoId = emigoId;
+  public void setAmigoId(String amigoId) {
+    this.amigoId = amigoId;
   }
 
   public Contact name(String name) {
@@ -271,7 +271,7 @@ public class Contact   {
       return false;
     }
     Contact contact = (Contact) o;
-    return Objects.equals(this.emigoId, contact.emigoId) &&
+    return Objects.equals(this.amigoId, contact.amigoId) &&
         Objects.equals(this.name, contact.name) &&
         Objects.equals(this.description, contact.description) &&
         Objects.equals(this.logo, contact.logo) &&
@@ -286,7 +286,7 @@ public class Contact   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(emigoId, name, description, logo, location, node, registry, revision, version, handle, available);
+    return Objects.hash(amigoId, name, description, logo, location, node, registry, revision, version, handle, available);
   }
 
   @Override
@@ -294,7 +294,7 @@ public class Contact   {
     StringBuilder sb = new StringBuilder();
     sb.append("class Contact {\n");
     
-    sb.append("    emigoId: ").append(toIndentedString(emigoId)).append("\n");
+    sb.append("    amigoId: ").append(toIndentedString(amigoId)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    logo: ").append(toIndentedString(logo)).append("\n");

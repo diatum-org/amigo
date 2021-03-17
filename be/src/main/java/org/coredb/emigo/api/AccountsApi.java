@@ -5,8 +5,8 @@
  */
 package org.coredb.emigo.api;
 
-import org.coredb.emigo.model.Emigo;
-import org.coredb.emigo.model.EmigoLogin;
+import org.coredb.emigo.model.Amigo;
+import org.coredb.emigo.model.AmigoLogin;
 import org.coredb.emigo.model.Result;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -29,16 +29,16 @@ import java.util.Map;
 public interface AccountsApi {
 
 
-    @ApiOperation(value = "", nickname = "attachAccount", notes = "Create new emigo account and in turn attach an existing db account", response = EmigoLogin.class, tags={ "accounts", })
+    @ApiOperation(value = "", nickname = "attachAccount", notes = "Create new amigo account and in turn attach an existing db account", response = AmigoLogin.class, tags={ "accounts", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 201, message = "account created", response = EmigoLogin.class),
+        @ApiResponse(code = 201, message = "account created", response = AmigoLogin.class),
         @ApiResponse(code = 401, message = "invalid password"),
         @ApiResponse(code = 406, message = "account limit reached"),
         @ApiResponse(code = 500, message = "internal server error") })
     @RequestMapping(value = "/accounts/attached",
         produces = { "application/json" }, 
         method = RequestMethod.POST)
-    ResponseEntity<EmigoLogin> attachAccount(@NotNull @ApiParam(value = "id of emigo to be attached", required = true) @Valid @RequestParam(value = "emigoId", required = true) String emigoId
+    ResponseEntity<AmigoLogin> attachAccount(@NotNull @ApiParam(value = "id of amigo to be attached", required = true) @Valid @RequestParam(value = "amigoId", required = true) String amigoId
 ,@NotNull @ApiParam(value = "single use code", required = true) @Valid @RequestParam(value = "code", required = true) String code
 ,@NotNull @ApiParam(value = "node to forward request to", required = true) @Valid @RequestParam(value = "node", required = true) String node
 );
@@ -57,9 +57,9 @@ public interface AccountsApi {
 
 
 
-    @ApiOperation(value = "", nickname = "updateHandle", notes = "Update profile with registry message", response = Emigo.class, tags={ "accounts", })
+    @ApiOperation(value = "", nickname = "updateHandle", notes = "Update profile with registry message", response = Amigo.class, tags={ "accounts", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "handle updated", response = Emigo.class),
+        @ApiResponse(code = 200, message = "handle updated", response = Amigo.class),
         @ApiResponse(code = 400, message = "invalid message message received"),
         @ApiResponse(code = 401, message = "invalid login token"),
         @ApiResponse(code = 423, message = "account not enabled"),
@@ -68,7 +68,7 @@ public interface AccountsApi {
     @RequestMapping(value = "/accounts/registry",
         produces = { "application/json" }, 
         method = RequestMethod.PUT)
-    ResponseEntity<Emigo> updateHandle(@NotNull @ApiParam(value = "login token", required = true) @Valid @RequestParam(value = "token", required = true) String token
+    ResponseEntity<Amigo> updateHandle(@NotNull @ApiParam(value = "login token", required = true) @Valid @RequestParam(value = "token", required = true) String token
 ,@NotNull @ApiParam(value = "registry base url", required = true) @Valid @RequestParam(value = "registry", required = true) String registry
 ,@ApiParam(value = "current revision") @Valid @RequestParam(value = "revision", required = false) Integer revision
 );

@@ -14,8 +14,8 @@ import javax.validation.constraints.*;
  */
 @Validated
 public class NodeConnection   {
-  @JsonProperty("emigoId")
-  private String emigoId = null;
+  @JsonProperty("amigoId")
+  private String amigoId = null;
 
   @JsonProperty("node")
   private String node = null;
@@ -29,24 +29,24 @@ public class NodeConnection   {
   @JsonProperty("token")
   private String token = null;
 
-  public NodeConnection emigoId(String emigoId) {
-    this.emigoId = emigoId;
+  public NodeConnection amigoId(String amigoId) {
+    this.amigoId = amigoId;
     return this;
   }
 
   /**
-   * Get emigoId
-   * @return emigoId
+   * Get amigoId
+   * @return amigoId
   **/
   @ApiModelProperty(required = true, value = "")
   @NotNull
 
-  public String getEmigoId() {
-    return emigoId;
+  public String getAmigoId() {
+    return amigoId;
   }
 
-  public void setEmigoId(String emigoId) {
-    this.emigoId = emigoId;
+  public void setAmigoId(String amigoId) {
+    this.amigoId = amigoId;
   }
 
   public NodeConnection node(String node) {
@@ -139,7 +139,7 @@ public class NodeConnection   {
       return false;
     }
     NodeConnection nodeConnection = (NodeConnection) o;
-    return Objects.equals(this.emigoId, nodeConnection.emigoId) &&
+    return Objects.equals(this.amigoId, nodeConnection.amigoId) &&
         Objects.equals(this.node, nodeConnection.node) &&
         Objects.equals(this.handle, nodeConnection.handle) &&
         Objects.equals(this.registry, nodeConnection.registry) &&
@@ -148,7 +148,7 @@ public class NodeConnection   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(emigoId, node, handle, registry, token);
+    return Objects.hash(amigoId, node, handle, registry, token);
   }
 
   @Override
@@ -156,7 +156,7 @@ public class NodeConnection   {
     StringBuilder sb = new StringBuilder();
     sb.append("class NodeConnection {\n");
     
-    sb.append("    emigoId: ").append(toIndentedString(emigoId)).append("\n");
+    sb.append("    amigoId: ").append(toIndentedString(amigoId)).append("\n");
     sb.append("    node: ").append(toIndentedString(node)).append("\n");
     sb.append("    handle: ").append(toIndentedString(handle)).append("\n");
     sb.append("    registry: ").append(toIndentedString(registry)).append("\n");

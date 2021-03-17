@@ -26,7 +26,7 @@ import org.coredb.emigo.jpa.entity.Account;
 import org.coredb.emigo.jpa.repository.AccountRepository;
 import org.coredb.emigo.model.GpsLocation;
 import org.coredb.emigo.model.SearchArea;
-import org.coredb.emigo.model.Emigo;
+import org.coredb.emigo.model.Amigo;
 import org.coredb.emigo.model.Contact;
 
 import org.coredb.emigo.service.specification.AccountSpecificationDescription;

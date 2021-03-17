@@ -12,7 +12,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.coredb.emigo.model.EmigoLogin;
+import org.coredb.emigo.model.AmigoLogin;
 
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -32,14 +32,14 @@ import java.io.IOException;
 
 import org.springframework.web.client.RestTemplate;
 
-import org.coredb.emigo.model.Emigo;
+import org.coredb.emigo.model.Amigo;
 import org.coredb.emigo.model.Contact;
 import org.coredb.emigo.model.NodeConnection;
 import org.coredb.emigo.model.UserEntry;
 import org.coredb.emigo.model.ServiceAccess;
 import org.coredb.emigo.model.LinkMessage;
-import org.coredb.emigo.model.EmigoToken;
-import org.coredb.emigo.model.EmigoMessage;
+import org.coredb.emigo.model.AmigoToken;
+import org.coredb.emigo.model.AmigoMessage;
 import org.coredb.emigo.service.util.PasswordUtil;
 import org.coredb.emigo.service.util.EmigoUtil;
 import org.coredb.emigo.jpa.entity.Account;
@@ -107,7 +107,7 @@ public class AccountService {
     return rest.postForObject(url, request, LinkMessage.class);
   }
 
-  private EmigoToken createAccount(String cluster, String token, LinkMessage link) throws RestClientException {
+  private AmigoToken createAccount(String cluster, String token, LinkMessage link) throws RestClientException {
     
     // construct request url
     String url = cluster + "/access/accounts/created?token=" + token;
@@ -117,10 +117,10 @@ public class AccountService {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
     HttpEntity<LinkMessage> request = new HttpEntity<LinkMessage>(link, headers);
-    return rest.postForObject(url, request, EmigoToken.class);
+    return rest.postForObject(url, request, AmigoToken.class);
   }
 
-  private EmigoToken attachAccount(String base, String emigoId, LinkMessage link, String pass) throws RestClientException {
+  private AmigoToken attachAccount(String base, String emigoId, LinkMessage link, String pass) throws RestClientException {
   
     // construct request url
     String url = base + "/access/accounts/attached?pass=" + pass + "&emigoId=" + emigoId;
@@ -130,10 +130,10 @@ public class AccountService {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
     HttpEntity<LinkMessage> request = new HttpEntity<LinkMessage>(link, headers);
-    return rest.postForObject(url, request, EmigoToken.class);
+    return rest.postForObject(url, request, AmigoToken.class);
   }
 
-  private UserEntry setToken(EmigoToken emigo) throws RestClientException {
+  private UserEntry setToken(AmigoToken emigo) throws RestClientException {
 
     // construct request url
     String token = configService.getServerStringValue(SC_APP_TOKEN, null);
@@ -144,11 +144,11 @@ public class AccountService {
     RestTemplate rest = new RestTemplate();
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
-    HttpEntity<EmigoToken> request = new HttpEntity<EmigoToken>(emigo, headers);
+    HttpEntity<AmigoToken> request = new HttpEntity<AmigoToken>(emigo, headers);
     return rest.postForObject(url, request, UserEntry.class);
   }
 
-  private EmigoMessage getMessage(String emigoId, String handle, String registry) throws RestClientException, IllegalArgumentException {
+  private AmigoMessage getMessage(String emigoId, String handle, String registry) throws RestClientException, IllegalArgumentException {
    
     // construct rquest url
     String url = registry + "/emigo/messages?";
@@ -164,11 +164,11 @@ public class AccountService {
   
     // retrieve message from registry
     RestTemplate rest = new RestTemplate();
-    return rest.getForObject(url, EmigoMessage.class);    
+    return rest.getForObject(url, AmigoMessage.class);    
   }
 
   @Transactional
-  public EmigoLogin attach(String emigoId, String node, String passToken) 
+  public AmigoLogin attach(String emigoId, String node, String passToken) 
       throws InvalidParameterException, NotFoundException, IOException, RestClientException, Exception {
  
     Long cur = Instant.now().getEpochSecond();
@@ -177,8 +177,8 @@ public class AccountService {
     LinkMessage link = getAttachLink(emigoId);
 
     // attach entry
-    EmigoToken token = attachAccount(node, emigoId, link, passToken);
-    Emigo emigo = EmigoUtil.getObject(token.getEmigo());
+    AmigoToken token = attachAccount(node, emigoId, link, passToken);
+    Amigo emigo = EmigoUtil.getObject(token.getAmigo());
 
     // complete connection
     UserEntry user = setToken(token);
@@ -186,13 +186,13 @@ public class AccountService {
     String serviceToken = user.getServiceToken();
 
     // validate emigo 
-    if(!user.getEmigoId().equals(emigo.getEmigoId())) {
+    if(!user.getAmigoId().equals(emigo.getAmigoId())) {
       throw new InvalidParameterException("invalid user id");
     }
 
     // add new entry
     String tok = PasswordUtil.token();
-    Account act = accountRepository.findOneByEmigoId(user.getEmigoId());
+    Account act = accountRepository.findOneByEmigoId(user.getAmigoId());
     if(act == null) {
       act = new Account(emigo, tok, accountToken, serviceToken, cur);
     }
@@ -204,7 +204,7 @@ public class AccountService {
 
     // construct response
     NodeConnection account = new NodeConnection();
-    account.setEmigoId(contact.getEmigoId());
+    account.setAmigoId(contact.getAmigoId());
     account.setNode(contact.getNode());
     account.setHandle(contact.getHandle());
     account.setRegistry(contact.getRegistry());
@@ -215,16 +215,16 @@ public class AccountService {
     //service.setHandle(configService.getServerStringValue(SC_EMIGO_HANDLE, null));
     service.setRegistry(configService.getServerStringValue(SC_EMIGO_REGISTRY, null));
     service.setToken(serviceToken);
-    EmigoLogin login = new EmigoLogin();
+    AmigoLogin login = new AmigoLogin();
     login.setAccount(account);
     login.setService(service);
     login.setToken(tok);
     return login;
   }  
 
-  private Emigo getEmigo(Contact contact) {
-    Emigo emigo = new Emigo();
-    emigo.setEmigoId(contact.getEmigoId());
+  private Amigo getEmigo(Contact contact) {
+    Amigo emigo = new Amigo();
+    emigo.setAmigoId(contact.getAmigoId());
     emigo.setName(contact.getName());
     emigo.setDescription(contact.getDescription());
     emigo.setLogo(contact.getLogo());
@@ -238,7 +238,7 @@ public class AccountService {
   }
 
   @Transactional
-  public Emigo update(Account act, String registry, Integer revision) 
+  public Amigo update(Account act, String registry, Integer revision) 
       throws IllegalArgumentException, RestClientException, Exception {
 
     // nothing to do if no new message expected
@@ -247,10 +247,10 @@ public class AccountService {
     }
   
     // retrieve message
-    EmigoMessage msg = getMessage(act.getEmigoId(), null, registry);
+    AmigoMessage msg = getMessage(act.getEmigoId(), null, registry);
 
     // decode message
-    Emigo emigo = EmigoUtil.getObject(msg);
+    Amigo emigo = EmigoUtil.getObject(msg);
 
     // dont update if registry doesnt match
     if(registry.equals(emigo.getRegistry()) == false) {

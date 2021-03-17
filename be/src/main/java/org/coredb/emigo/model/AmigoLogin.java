@@ -11,10 +11,10 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * EmigoLogin
+ * AmigoLogin
  */
 @Validated
-public class EmigoLogin   {
+public class AmigoLogin   {
   @JsonProperty("token")
   private String token = null;
 
@@ -24,7 +24,7 @@ public class EmigoLogin   {
   @JsonProperty("service")
   private NodeConnection service = null;
 
-  public EmigoLogin token(String token) {
+  public AmigoLogin token(String token) {
     this.token = token;
     return this;
   }
@@ -44,7 +44,7 @@ public class EmigoLogin   {
     this.token = token;
   }
 
-  public EmigoLogin account(NodeConnection account) {
+  public AmigoLogin account(NodeConnection account) {
     this.account = account;
     return this;
   }
@@ -65,7 +65,7 @@ public class EmigoLogin   {
     this.account = account;
   }
 
-  public EmigoLogin service(NodeConnection service) {
+  public AmigoLogin service(NodeConnection service) {
     this.service = service;
     return this;
   }
@@ -95,10 +95,10 @@ public class EmigoLogin   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    EmigoLogin emigoLogin = (EmigoLogin) o;
-    return Objects.equals(this.token, emigoLogin.token) &&
-        Objects.equals(this.account, emigoLogin.account) &&
-        Objects.equals(this.service, emigoLogin.service);
+    AmigoLogin amigoLogin = (AmigoLogin) o;
+    return Objects.equals(this.token, amigoLogin.token) &&
+        Objects.equals(this.account, amigoLogin.account) &&
+        Objects.equals(this.service, amigoLogin.service);
   }
 
   @Override
@@ -109,7 +109,7 @@ public class EmigoLogin   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class EmigoLogin {\n");
+    sb.append("class AmigoLogin {\n");
     
     sb.append("    token: ").append(toIndentedString(token)).append("\n");
     sb.append("    account: ").append(toIndentedString(account)).append("\n");

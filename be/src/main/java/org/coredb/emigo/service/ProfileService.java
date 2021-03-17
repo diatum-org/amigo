@@ -11,7 +11,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.coredb.emigo.model.EmigoLogin;
+import org.coredb.emigo.model.AmigoLogin;
 
 import javax.ws.rs.NotAcceptableException;
 import java.nio.file.AccessDeniedException;

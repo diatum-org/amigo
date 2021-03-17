@@ -70,7 +70,7 @@ public interface ProfileApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<Profile> gpsProfile(@ApiParam(value = "emigo to insert" ,required=true )  @Valid @RequestBody GpsLocation body,@NotNull @ApiParam(value = "access token", required = true) @Valid @RequestParam(value = "token", required = true) String token,@ApiParam(value = "expiration of location") @Valid @RequestParam(value = "expires", required = false) Long expires);
+    ResponseEntity<Profile> gpsProfile(@ApiParam(value = "amigo to insert" ,required=true )  @Valid @RequestBody GpsLocation body,@NotNull @ApiParam(value = "access token", required = true) @Valid @RequestParam(value = "token", required = true) String token,@ApiParam(value = "expiration of location") @Valid @RequestParam(value = "expires", required = false) Long expires);
 
 
     @ApiOperation(value = "", nickname = "searchableProfile", notes = "Update searchable state", response = Profile.class, tags={ "profile", })

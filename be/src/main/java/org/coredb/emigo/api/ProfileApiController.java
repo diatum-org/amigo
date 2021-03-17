@@ -113,7 +113,7 @@ public class ProfileApiController implements ProfileApi {
       }
     }
 
-    public ResponseEntity<Profile> gpsProfile(@ApiParam(value = "emigo to insert" ,required=true )  @Valid @RequestBody GpsLocation body,@NotNull @ApiParam(value = "access token", required = true) @Valid @RequestParam(value = "token", required = true) String token,@ApiParam(value = "expiration of location") @Valid @RequestParam(value = "expires", required = false) Long expires) {
+    public ResponseEntity<Profile> gpsProfile(@ApiParam(value = "amigo to insert" ,required=true )  @Valid @RequestBody GpsLocation body,@NotNull @ApiParam(value = "access token", required = true) @Valid @RequestParam(value = "token", required = true) String token,@ApiParam(value = "expiration of location") @Valid @RequestParam(value = "expires", required = false) Long expires) {
       try {
         Account account = authService.loginToken(token);
         Profile profile = profileService.setLocation(account, body, expires);
