@@ -49,6 +49,7 @@ sudo chown -R tomcat:tomcat /opt/emigo
 
 cp stat.sh /home/ubuntu
 cp renew.sh /home/ubuntu
+cp backup.sh /home/ubuntu
 cp synccert.sh /home/ubuntu
 
 STAT=`head /dev/urandom | tr -dc A-Za-z0-9 | head -c 32 ; echo ''`
