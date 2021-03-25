@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.coredb.emigo.model.AmigoLogin;
@@ -25,12 +26,14 @@ import javax.annotation.PreDestroy;
 
 import javax.ws.rs.NotAcceptableException;
 import java.nio.file.AccessDeniedException;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.coredb.emigo.api.NotFoundException;
 import java.security.InvalidParameterException;
 import java.io.IOException;
 
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.ResourceAccessException;
 
 import org.coredb.emigo.model.Amigo;
 import org.coredb.emigo.model.Contact;
@@ -120,7 +123,7 @@ public class AccountService {
     return rest.postForObject(url, request, AmigoToken.class);
   }
 
-  private AmigoToken attachAccount(String base, String emigoId, LinkMessage link, String pass) throws RestClientException {
+  private ResponseEntity<AmigoToken> attachAccount(String base, String emigoId, LinkMessage link, String pass) throws RestClientException {
   
     // construct request url
     String url = base + "/access/accounts/attached?pass=" + pass + "&amigoId=" + emigoId;
@@ -130,7 +133,8 @@ public class AccountService {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
     HttpEntity<LinkMessage> request = new HttpEntity<LinkMessage>(link, headers);
-    return rest.postForObject(url, request, AmigoToken.class);
+
+    return rest.postForEntity(url, request, AmigoToken.class);
   }
 
   private UserEntry setToken(AmigoToken emigo) throws RestClientException {
@@ -169,19 +173,48 @@ public class AccountService {
 
   @Transactional
   public AmigoLogin attach(String emigoId, String node, String passToken) 
-      throws InvalidParameterException, NotFoundException, IOException, RestClientException, Exception {
+      throws InvalidParameterException, NotFoundException, IOException, Exception {
  
     Long cur = Instant.now().getEpochSecond();
 
     // retrieve attach link
-    LinkMessage link = getAttachLink(emigoId);
+    LinkMessage link;
+    try {
+      link = getAttachLink(emigoId);
+    }
+    catch(Exception f) {
+      throw new Exception("app identity error");
+    }
 
     // attach entry
-    AmigoToken token = attachAccount(node, emigoId, link, passToken);
+    ResponseEntity<AmigoToken> response;
+    try {
+      response = attachAccount(node, emigoId, link, passToken);
+    }
+    catch(HttpClientErrorException c) {
+      if(c.getStatusCode() == HttpStatus.METHOD_NOT_ALLOWED) {
+        throw new Exception("invalid attachment code");
+      }
+      else {
+        throw new Exception("host node error");
+      }
+    }
+    catch(Exception f) {
+      throw new Exception("host node error");
+    }
+
+    AmigoToken token = response.getBody();
     Amigo emigo = EmigoUtil.getObject(token.getAmigo());
 
     // complete connection
-    UserEntry user = setToken(token);
+    UserEntry user;
+    try {
+      user = setToken(token);
+    }
+    catch(Exception f) {
+      throw new Exception("registration error");
+    }
+
     String accountToken = user.getAccountToken();
     String serviceToken = user.getServiceToken();
 

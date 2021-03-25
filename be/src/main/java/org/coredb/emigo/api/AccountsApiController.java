@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.http.HttpHeaders;
 
 import org.coredb.emigo.jpa.entity.Account;
 import org.coredb.emigo.service.AuthService;
@@ -71,13 +72,11 @@ public class AccountsApiController implements AccountsApi {
         log.error(e.toString());
         return new ResponseEntity<AmigoLogin>(HttpStatus.NOT_ACCEPTABLE); //406
       }
-      catch(RestClientException e) {
-        log.error(e.toString());
-        return new ResponseEntity<AmigoLogin>(HttpStatus.SERVICE_UNAVAILABLE); //503
-      }
       catch(Exception e) {
         log.error(e.toString());
-        return new ResponseEntity<AmigoLogin>(HttpStatus.INTERNAL_SERVER_ERROR); //500
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("details", e.getMessage());
+        return new ResponseEntity<AmigoLogin>(headers, HttpStatus.SERVICE_UNAVAILABLE);
       }
     }
 
