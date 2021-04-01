@@ -2,6 +2,7 @@ package org.coredb.emigo.api;
 
 import org.coredb.emigo.model.AppConfig;
 import org.coredb.emigo.model.SystemStat;
+import org.coredb.emigo.model.AmigoEntry;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -30,6 +31,31 @@ public interface ConsoleApi {
     @RequestMapping(value = "/console/access",
         method = RequestMethod.PUT)
     ResponseEntity<Void> checkToken(@NotNull @ApiParam(value = "access token", required = true) @Valid @RequestParam(value = "token", required = true) String token
+);
+
+
+    @ApiOperation(value = "", nickname = "getAmigos", notes = "Retrieve blocked or flagged identites", response = AmigoEntry.class, responseContainer = "List", tags={ "console", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "successful operation", response = SystemStat.class, responseContainer = "List"),
+        @ApiResponse(code = 404, message = "token not found"),
+        @ApiResponse(code = 500, message = "internal server error") })
+    @RequestMapping(value = "/console/amigos",
+        produces = { "application/json" }, 
+        method = RequestMethod.GET)
+    ResponseEntity<List<AmigoEntry>> getAmigos(@NotNull @ApiParam(value = "access token", required = true) @Valid @RequestParam(value = "token", required = true) String token
+);
+
+
+    @ApiOperation(value = "", nickname = "setAmigo", notes = "Set blocked state of identity", response = AmigoEntry.class, tags={ "console", })
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "successful operation", response = AmigoEntry.class) })
+    @RequestMapping(value = "/console/amigos/{amigoId}",
+        produces = { "application/json" },
+        method = RequestMethod.PUT)
+
+    ResponseEntity<AmigoEntry> setAmigo(@NotNull @ApiParam(value = "access token", required = true) @Valid @RequestParam(value = "token", required = true) String token
+      ,@ApiParam(value = "referenced amigo entry",required=true) @PathVariable("amigoId") String amigoId
+      ,@NotNull @ApiParam(value = "blocked flag", required = true) @Valid @RequestParam(value = "blocked", required = true) Boolean blocked
 );
 
 

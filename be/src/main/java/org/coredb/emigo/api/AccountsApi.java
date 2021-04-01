@@ -44,6 +44,17 @@ public interface AccountsApi {
 );
 
 
+    @ApiOperation(value = "", nickname = "setAmigoFlag", notes = "Report identity to admin", tags={ "accounts", })
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "successful operation") })
+    @RequestMapping(value = "/console/amigos/{amigoId}/flag",
+        produces = { "application/json" },
+        method = RequestMethod.PUT)
+
+    ResponseEntity<Void> setAmigoFlag(@NotNull @ApiParam(value = "access token", required = true) @Valid @RequestParam(value = "token", required = true) String token
+      ,@ApiParam(value = "referenced amigo entry",required=true) @PathVariable("amigoId") String amigoId
+);
+
 
     @ApiOperation(value = "", nickname = "getIdentityRevision", notes = "request revision of module data", response = Integer.class, tags={ "accounts", })
     @ApiResponses(value = { 
@@ -54,7 +65,6 @@ public interface AccountsApi {
         method = RequestMethod.GET)
     ResponseEntity<Integer> getIdentityRevision(@NotNull @ApiParam(value = "access token", required = true) @Valid @RequestParam(value = "token", required = true) String token
 );
-
 
 
     @ApiOperation(value = "", nickname = "updateHandle", notes = "Update profile with registry message", response = Amigo.class, tags={ "accounts", })

@@ -80,6 +80,13 @@ public class AccountsApiController implements AccountsApi {
       }
     }
 
+    public ResponseEntity<Void> setAmigoFlag(@NotNull @ApiParam(value = "access token", required = true) @Valid @RequestParam(value = "token", required = true) String token
+      ,@ApiParam(value = "referenced amigo entry",required=true) @PathVariable("amigoId") String amigoId
+)
+    {
+      return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+    }
+
     public ResponseEntity<Integer> getIdentityRevision(@NotNull @ApiParam(value = "access token", required = true) @Valid @RequestParam(value = "token", required = true) String token) {
     try {
         Account act = authService.loginToken(token);

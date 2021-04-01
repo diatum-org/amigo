@@ -138,6 +138,71 @@ paths:
         description: updated configuration
         required: true
 
+  /console/amigos:
+    get:
+      tags:
+        - console
+      description: Retrieve blocked or flagged identities
+      operationId: get-amigos
+      parameters:
+        - name: token
+          in: query
+          description: access token
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AmigoEntry'
+        '401':
+          description: invalid token
+        '500':
+          description: internal server error
+          
+  /console/amigos/{amigoId}:
+    put:
+      tags:
+        - console
+      description: Set blocked state for identity
+      operationId: set-amigo
+      parameters:
+        - name: token
+          in: query
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: amigoId
+          in: path
+          description: identity of amigo
+          required: true
+          schema:
+            type: string
+            format: amigo-id
+        - name: blocked
+          in: query
+          description: block access for identity
+          required: true
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AmigoEntry'
+        '401':
+          description: invalid token
+        '500':
+          description: internal server error
+          
   /admin/server/stats:
     get:
       tags:
@@ -328,6 +393,33 @@ paths:
               schema:
                 type: integer
                 format: int32
+        '403':
+          description: access denied
+
+  /accounts/amigos/{amigoId}/flag:
+    put:
+      tags:
+        - accounts
+      description: Report user to admin
+      operationId: set-amigo-flag
+      parameters:
+      - name: token
+        in: query
+        description: access token
+        required: true
+        schema:
+          type: string
+          format: secure-token
+      - name: amigoId
+        in: path
+        description: id of identity to flag
+        required: true
+        schema:
+          type: string
+          format: amigo-id
+      responses:
+        '200':
+          description: successful operation
         '403':
           description: access denied
 
@@ -805,6 +897,26 @@ components:
         handle:
           type: string
 
+    AmigoEntry:
+      type: object
+      required:
+        - amigoId
+        - registry
+        - flagCount
+        - blocked
+      properties:
+        amigoId:
+          type: string
+          format: amigoId
+        registry:
+          type: string
+          example: https://registry.coredb.org:8888/app
+        flagCount:
+          type: number
+          format: int32
+        blocked:
+          type: boolean
+          
     AmigoToken:
       type: object
       required:

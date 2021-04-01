@@ -1,6 +1,7 @@
 package org.coredb.emigo.api;
 
 import org.coredb.emigo.model.AppConfig;
+import org.coredb.emigo.model.AmigoEntry;
 import org.coredb.emigo.model.SystemStat;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
@@ -60,6 +61,18 @@ public class ConsoleApiController implements ConsoleApi {
       catch(Exception e) {
         return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
       }
+    }
+
+    public ResponseEntity<List<AmigoEntry>> getAmigos(@NotNull @ApiParam(value = "access token", required = true) @Valid @RequestParam(value = "token", required = true) String token
+) {
+      return new ResponseEntity<List<AmigoEntry>>(HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    public ResponseEntity<AmigoEntry> setAmigo(@NotNull @ApiParam(value = "access token", required = true) @Valid @RequestParam(value = "token", required = true) String token
+      ,@ApiParam(value = "referenced amigo entry",required=true) @PathVariable("amigoId") String amigoId
+      ,@NotNull @ApiParam(value = "blocked flag", required = true) @Valid @RequestParam(value = "blocked", required = true) Boolean blocked
+) {
+      return new ResponseEntity<AmigoEntry>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     public ResponseEntity<List<SystemStat>> getStats(@NotNull @ApiParam(value = "access token", required = true) @Valid @RequestParam(value = "token", required = true) String token
