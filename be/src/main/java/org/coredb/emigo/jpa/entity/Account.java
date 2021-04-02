@@ -24,12 +24,18 @@ public class Account extends Contact implements Serializable {
   private String serviceToken;
   private Boolean enabled;
   private Long createTimestamp;
-  
+  private Integer reportCount;
+  private Long reportTimestamp;
+
   public Account() { 
+    this.reportCount = 0;
+    this.reportTimestamp = (long)0;
     this.profileRevision = 0;
   }
 
   public Account(Amigo emigo, String login, String account, String service, Long timestamp) {
+    this.reportCount = 0;
+    this.reportTimestamp = (long)0;
     update(emigo, login, account, service, timestamp);
   }
 
@@ -96,6 +102,22 @@ public class Account extends Contact implements Serializable {
   }
   public void setCreateTimestamp(Long value) {
     this.createTimestamp = value;
+  }
+
+  @JsonIgnore
+  public Long getReportTimestamp() {
+    return this.reportTimestamp;
+  }
+  public void setReportTimestamp(Long value) {
+    this.reportTimestamp = value;
+  }
+
+  @JsonIgnore
+  public Integer getReportCount() {
+    return this.reportCount;
+  }
+  public void setReportCount(Integer value) {
+    this.reportCount = value;
   }
 
   @JsonIgnore

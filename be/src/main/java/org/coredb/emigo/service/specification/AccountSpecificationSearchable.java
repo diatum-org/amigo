@@ -3,6 +3,7 @@ package org.coredb.emigo.service.specification;
 import java.io.*;
 import java.text.*;
 import java.util.*;
+import java.time.Instant;
 import java.sql.Timestamp;
 
 import org.coredb.emigo.jpa.entity.Account;
@@ -23,7 +24,10 @@ public class AccountSpecificationSearchable implements Specification<Account> {
 
   @Override
   public Predicate toPredicate (Root<Account> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
-    return builder.equal(root.<Account>get("searchable"), searchable);
+    Long cur = Instant.now().getEpochSecond() - (long)3600;
+    Predicate search = builder.equal(root.<Boolean>get("searchable"), searchable);
+    Predicate reported = builder.lessThan(root.<Long>get("reportTimestamp"), cur);
+    return builder.and(search, reported);
   }
 }
 

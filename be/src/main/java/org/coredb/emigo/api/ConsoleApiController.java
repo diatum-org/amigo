@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import org.coredb.emigo.service.ConsoleService;
+import org.coredb.emigo.service.AccountService;
 import org.coredb.emigo.service.ServerStatService;
 
 import javax.validation.constraints.*;
@@ -43,6 +44,9 @@ public class ConsoleApiController implements ConsoleApi {
     private ConsoleService consoleService;
 
     @org.springframework.beans.factory.annotation.Autowired
+    private AccountService accountService;
+
+    @org.springframework.beans.factory.annotation.Autowired
     public ConsoleApiController(ObjectMapper objectMapper, HttpServletRequest request) {
         this.objectMapper = objectMapper;
         this.request = request;
@@ -65,14 +69,36 @@ public class ConsoleApiController implements ConsoleApi {
 
     public ResponseEntity<List<AmigoEntry>> getAmigos(@NotNull @ApiParam(value = "access token", required = true) @Valid @RequestParam(value = "token", required = true) String token
 ) {
-      return new ResponseEntity<List<AmigoEntry>>(HttpStatus.NOT_IMPLEMENTED);
+      try {
+        if(consoleService.checkAccess(token)) {
+          List<AmigoEntry> entries = accountService.reviewAmigos();
+          return new ResponseEntity<List<AmigoEntry>>(entries, HttpStatus.OK);
+        }
+        else {
+          return new ResponseEntity<List<AmigoEntry>>(HttpStatus.FORBIDDEN);
+        }
+      }
+      catch(Exception e) {
+        return new ResponseEntity<List<AmigoEntry>>(HttpStatus.INTERNAL_SERVER_ERROR);
+      }
     }
 
     public ResponseEntity<AmigoEntry> setAmigo(@NotNull @ApiParam(value = "access token", required = true) @Valid @RequestParam(value = "token", required = true) String token
       ,@ApiParam(value = "referenced amigo entry",required=true) @PathVariable("amigoId") String amigoId
       ,@NotNull @ApiParam(value = "blocked flag", required = true) @Valid @RequestParam(value = "blocked", required = true) Boolean blocked
 ) {
-      return new ResponseEntity<AmigoEntry>(HttpStatus.NOT_IMPLEMENTED);
+      try {
+        if(consoleService.checkAccess(token)) {
+          AmigoEntry entry = accountService.blockAmigo(amigoId, blocked);
+          return new ResponseEntity<AmigoEntry>(entry, HttpStatus.OK);
+        }
+        else {
+          return new ResponseEntity<AmigoEntry>(HttpStatus.FORBIDDEN);
+        }
+      }
+      catch(Exception e) {
+        return new ResponseEntity<AmigoEntry>(HttpStatus.INTERNAL_SERVER_ERROR);
+      }
     }
 
     public ResponseEntity<List<SystemStat>> getStats(@NotNull @ApiParam(value = "access token", required = true) @Valid @RequestParam(value = "token", required = true) String token

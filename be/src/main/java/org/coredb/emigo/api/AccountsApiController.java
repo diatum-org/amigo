@@ -84,7 +84,23 @@ public class AccountsApiController implements AccountsApi {
       ,@ApiParam(value = "referenced amigo entry",required=true) @PathVariable("amigoId") String amigoId
 )
     {
-      return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+      try {
+        Account act = authService.loginToken(token);
+        accountService.flagAmigo(amigoId);
+        return new ResponseEntity<Void>(HttpStatus.OK);
+      }
+      catch(InvalidParameterException e) {
+        log.error(e.toString());
+        return new ResponseEntity<Void>(HttpStatus.UNAUTHORIZED); //401
+      }
+      catch(NotFoundException e) {
+        log.error(e.toString());
+        return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+      }
+      catch(Exception e) {
+        log.error(e.toString());
+        return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR); //500
+      }
     }
 
     public ResponseEntity<Integer> getIdentityRevision(@NotNull @ApiParam(value = "access token", required = true) @Valid @RequestParam(value = "token", required = true) String token) {

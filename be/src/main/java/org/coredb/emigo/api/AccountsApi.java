@@ -47,7 +47,7 @@ public interface AccountsApi {
     @ApiOperation(value = "", nickname = "setAmigoFlag", notes = "Report identity to admin", tags={ "accounts", })
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "successful operation") })
-    @RequestMapping(value = "/console/amigos/{amigoId}/flag",
+    @RequestMapping(value = "/accounts/amigos/{amigoId}/flag",
         produces = { "application/json" },
         method = RequestMethod.PUT)
 

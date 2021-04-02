@@ -22,3 +22,5 @@ create index gps_latitude_index on account(gps_latitude);
 create index gps_altitude_index on account(gps_altitude);
 create index gps_timestamp_index on account(gps_timestamp);
 
+alter table account add column report_timestamp bigint(64) not null default 0;
+alter table account add column report_count int(11) not null default 0;

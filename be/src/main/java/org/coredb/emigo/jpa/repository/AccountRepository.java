@@ -11,6 +11,7 @@ public interface AccountRepository
   List<Account> findAll();
   Account findOneByLoginToken(String token);
   Account findOneByEmigoId(String id);
+  List<Account> findByReportCountGreaterThanOrderByReportCountDesc(Integer count);
   long count();
 }
 

@@ -41,6 +41,7 @@ import org.coredb.emigo.model.NodeConnection;
 import org.coredb.emigo.model.UserEntry;
 import org.coredb.emigo.model.ServiceAccess;
 import org.coredb.emigo.model.LinkMessage;
+import org.coredb.emigo.model.AmigoEntry;
 import org.coredb.emigo.model.AmigoToken;
 import org.coredb.emigo.model.AmigoMessage;
 import org.coredb.emigo.service.util.PasswordUtil;
@@ -268,6 +269,67 @@ public class AccountService {
     emigo.setVersion(contact.getVersion());
     emigo.setHandle(contact.getHandle());
     return emigo;
+  }
+
+  @Transactional
+  public void flagAmigo(String amigoId) throws NotFoundException {
+
+    // retrieve referenced account
+    Account act = accountRepository.findOneByEmigoId(amigoId);
+    if(act == null) {
+      throw new NotFoundException(404, "amigo not found");
+    }
+
+    Long cur = Instant.now().getEpochSecond();
+    act.setReportCount(act.getReportCount() + 1);
+    act.setReportTimestamp(cur);
+    accountRepository.save(act);
+  }
+
+  @Transactional
+  public AmigoEntry blockAmigo(String amigoId, Boolean block) throws NotFoundException, Exception {
+  
+    // retrieve referenced account
+    Account act = accountRepository.findOneByEmigoId(amigoId);
+    if(act == null) {
+      throw new NotFoundException(404, "amigo not found");
+    }
+
+    if(block) {
+      act.setEnabled(false);
+      act.setLoginToken(PasswordUtil.token());
+    }
+    else {
+      act.setEnabled(true);
+      act.setReportCount(0);
+      act.setReportTimestamp((long)0);
+    }
+    act = accountRepository.save(act);
+
+    AmigoEntry entry = new AmigoEntry();
+    entry.setAmigoId(act.getAmigoId());
+    entry.setRegistry(act.getRegistry());
+    entry.setFlagCount(act.getReportCount());
+    entry.setBlocked(!act.getEnabled());
+    return entry;
+  }
+
+  public List<AmigoEntry> reviewAmigos() {
+    
+    // get all flagged accounts
+    List<Account> accounts = accountRepository.findByReportCountGreaterThanOrderByReportCountDesc(0);
+
+    // return report data
+    List<AmigoEntry> entries = new ArrayList<AmigoEntry>();
+    for(Account act: accounts) {
+      AmigoEntry entry = new AmigoEntry();
+      entry.setAmigoId(act.getAmigoId());
+      entry.setRegistry(act.getRegistry());
+      entry.setFlagCount(act.getReportCount());
+      entry.setBlocked(!act.getEnabled());
+      entries.add(entry);
+    }
+    return entries;
   }
 
   @Transactional

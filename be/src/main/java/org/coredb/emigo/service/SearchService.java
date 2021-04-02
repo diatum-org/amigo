@@ -54,7 +54,9 @@ public class SearchService {
 
   public List<Contact> search(Account account, String match, String name, String description, String location, SearchArea area, Integer offset, Integer limit) {
     // where searchable
+System.out.println("SEARCHABLE");
     Specifications<Account> spec = Specifications.where(new AccountSpecificationSearchable(true));    
+System.out.println("DONE");
 
     // where not self
     spec = spec.and(new AccountSpecificationEmigo(account.getEmigoId()));
