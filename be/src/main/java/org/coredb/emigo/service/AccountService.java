@@ -231,6 +231,9 @@ public class AccountService {
       act = new Account(emigo, tok, accountToken, serviceToken, cur);
     }
     else {
+      if(act.getEnabled() == false) {
+        throw new InvalidParameterException("account has been blocked");
+      }
       act.update(emigo, tok, accountToken, serviceToken, cur);
     }
     act = accountRepository.save(act);
