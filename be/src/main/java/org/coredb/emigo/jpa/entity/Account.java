@@ -36,7 +36,24 @@ public class Account extends Contact implements Serializable {
   public Account(Amigo emigo, String login, String account, String service, Long timestamp) {
     this.reportCount = 0;
     this.reportTimestamp = (long)0;
-    update(emigo, login, account, service, timestamp);
+    super.setAmigoId(emigo.getAmigoId());
+    super.setName(emigo.getName());
+    super.setDescription(emigo.getDescription());
+    super.setLogo(emigo.getLogo());
+    super.setLocation(emigo.getLocation());
+    super.setNode(emigo.getNode());
+    super.setVersion(emigo.getVersion());
+    super.setAvailable(true);
+    // registry and handle only set in registry response
+    super.setRevision(0);
+    this.gps = false;
+    this.searchable = true;
+    this.enabled = true;
+    this.loginToken = login;
+    this.accountToken = account;
+    this.serviceToken = service;
+    this.profileRevision = 0;
+    this.createTimestamp = timestamp;
   }
 
   @Transient
@@ -48,11 +65,9 @@ public class Account extends Contact implements Serializable {
     super.setLocation(emigo.getLocation());
     super.setNode(emigo.getNode());
     super.setVersion(emigo.getVersion());
-    super.setAvailable(false);
     // registry and handle only set in registry response
     super.setRevision(0);
     this.gps = false;
-    this.searchable = false;
     this.enabled = true;
     this.loginToken = login;
     this.accountToken = account;
